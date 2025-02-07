@@ -181,16 +181,21 @@ class MazeGenerator : EventHandler
 
     void applyCellsOnLevel()
     {
-        for (int i = 0; i < LINEDEFS_SIZE; i++) {
-            linedefs[i] = 1;
-        }
+        // for (int y = 0; y < MAZE_W; y++) {
+        //     for (int x = 0; x < MAZE_W; x++) {
+        //         for (int i = 0; i < 4; i++) {
+        //             linedefs[cellsToLinedefs[x][y][i]] = cells[x][y][i];
+        //         }
+        //     }
+        // }
 
-        for (int y = 0; y < MAZE_W; y++) {
-            for (int x = 0; x < MAZE_W; x++) {
-                for (int i = 0; i < 4; i++) {
-                    linedefs[cellsToLinedefs[x][y][i]] = cells[x][y][i];
-                }
-            }
+        for (int i = 0; i < 4; i++) {
+            linedefs[cellsToLinedefs[0][0][i]] = 1;
+            linedefs[cellsToLinedefs[0][1][i]] = 1;
+            linedefs[cellsToLinedefs[0][2][i]] = 1;
+            linedefs[cellsToLinedefs[0][3][i]] = 1;
+            linedefs[cellsToLinedefs[0][4][i]] = 1;
+            linedefs[cellsToLinedefs[0][5][i]] = 1;
         }
 
         for (int i = 0; i < LINEDEFS_SIZE; i++) {
