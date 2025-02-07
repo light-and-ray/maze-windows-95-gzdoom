@@ -10,6 +10,18 @@ class MazeGenerator : EventHandler
         PlayerInfo player = players[e.PlayerNumber];
         if (!player) return;
         generateMaze();
+        printMaze();
+    }
+
+    void printMaze()
+    {
+        for (int i = 0; i < MAZE_W; i++) {
+            string line = "";
+            for (int j = 0; j < MAZE_W; j++) {
+                line = string.format("%s, [%d, %d, %d, %d] ", line, cells[i][j][0], cells[i][j][1], cells[i][j][2], cells[i][j][3]);
+            }
+            console.printf(line);
+        }
     }
 
     void generateMaze()
