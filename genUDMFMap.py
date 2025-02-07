@@ -66,17 +66,14 @@ def save(lines: list[list[Line]], box: list[Line]):
 
 def genUDMFMap():
     lines : list[list[Line]] = []
-    num = 0
     for i in range(MAZE_W+1):
         lines.append([])
         for j in range(MAZE_W):
             lines[i].append(Line(v1=(i*TEXTURE_W, j*TEXTURE_W), v2=(i*TEXTURE_W, (j+1)*TEXTURE_W)))
-            num += 1
     for i in range(MAZE_W):
         lines.append([])
         for j in range(MAZE_W+1):
             lines[i].append(Line(v1=(i*TEXTURE_W, j*TEXTURE_W), v2=((i+1)*TEXTURE_W, j*TEXTURE_W)))
-            num += 1
 
     box : list[Line] = []
     A = (-TEXTURE_W, MAZE_W*TEXTURE_W+TEXTURE_W)

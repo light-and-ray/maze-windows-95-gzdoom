@@ -4,14 +4,17 @@ class MazeGenerator : EventHandler
     const MAZE_W = 10;
     const TOTAL_CELLS = 100;
     int cells[MAZE_W][MAZE_W][4];
+    int cellsToLinedefs[MAZE_W][MAZE_W][4];
 
     override void WorldLoaded(WorldEvent e)
     {
         generateMaze();
+        initCellsToLinedefs();
     }
 
-    void printMaze()
+    void printCells()
     {
+        console.printf("cells:");
         for (int i = 0; i < MAZE_W; i++) {
             string line = "";
             for (int j = 0; j < MAZE_W; j++) {
@@ -103,6 +106,53 @@ class MazeGenerator : EventHandler
                 path_size -= 1;
             }
         }
-        printMaze();
+        printCells();
+    }
+
+
+    void printCellsToLinedefs() {
+        console.printf("cellsToLinedefs:");
+        for (int y = 0; y < MAZE_W; y++) {
+            for (int x = 0; x < MAZE_W; x++) {
+                console.printf("(%d, %d): top=%d, right=%d, bottom=%d, left=%d",
+                       x, y,
+                       cellsToLinedefs[x][y][0],
+                       cellsToLinedefs[x][y][1],
+                       cellsToLinedefs[x][y][2],
+                       cellsToLinedefs[x][y][3]);
+            }
+        }
+    }
+
+
+    void initCellsToLinedefs()
+    {
+        int lineIndex = 0;
+        // Initialize horizontal lines
+        for (int y = 0; y <= MAZE_W; y++) {
+            for (int x = 0; x < MAZE_W; x++) {
+                if (y > 0) {
+                    cellsToLinedefs[x][y - 1][2] = lineIndex; // bottom side of cell at (x, y-1)
+                }
+                if (y < MAZE_W) {
+                    cellsToLinedefs[x][y][0] = lineIndex; // top side of cell at (x, y)
+                }
+                lineIndex++;
+            }
+        }
+
+        // Initialize vertical lines
+        for (int x = 0; x <= MAZE_W; x++) {
+            for (int y = 0; y < MAZE_W; y++) {
+                if (x > 0) {
+                    cellsToLinedefs[x - 1][y][1] = lineIndex; // right side of cell at (x-1, y)
+                }
+                if (x < MAZE_W) {
+                    cellsToLinedefs[x][y][3] = lineIndex; // left side of cell at (x, y)
+                }
+                lineIndex++;
+            }
+        }
+        printCellsToLinedefs();
     }
 }
