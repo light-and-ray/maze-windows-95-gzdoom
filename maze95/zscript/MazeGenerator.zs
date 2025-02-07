@@ -5,6 +5,8 @@ class MazeGenerator : EventHandler
     const TOTAL_CELLS = 100;
     int cells[MAZE_W][MAZE_W][4];
     int cellsToLinedefs[MAZE_W][MAZE_W][4];
+    const LINEDEFS_SIZE = (MAZE_W+1)*(MAZE_W)*2;
+    int linedefs[LINEDEFS_SIZE];
 
     override void WorldLoaded(WorldEvent e)
     {
@@ -103,8 +105,8 @@ class MazeGenerator : EventHandler
                 path[path_size] = currentCell;
                 path_size += 1;
             } else {
-                currentCell = path[path_size-1];
-                path_size -= 1;
+                    currentCell = path[path_size-1];
+                    path_size -= 1;
             }
         }
         printCells();
@@ -181,12 +183,16 @@ class MazeGenerator : EventHandler
         for (int y = 0; y < MAZE_W; y++) {
             for (int x = 0; x < MAZE_W; x++) {
                 for (int i = 0; i < 4; i++) {
-                    if (cells[x][y][i] != 0) {
-                        makeLineSolid(cellsToLinedefs[x][y][i]);
-                    } else {
-                        makeLineInvisible(cellsToLinedefs[x][y][i]);
-                    }
+                    linedefs[cellsToLinedefs[x][y][i]] = cells[x][y][i];
                 }
+            }
+        }
+
+        for (int i = 0; i < LINEDEFS_SIZE; i++) {
+            if (linedefs[i] != 0) {
+                makeLineSolid(i);
+            } else {
+                makeLineInvisible(i);
             }
         }
     }
