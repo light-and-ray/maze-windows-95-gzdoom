@@ -10,6 +10,7 @@ class MazeGenerator : EventHandler
     {
         generateMaze();
         initCellsToLinedefs();
+        applyCellsOnLevel();
     }
 
     void printCells()
@@ -154,5 +155,39 @@ class MazeGenerator : EventHandler
             }
         }
         printCellsToLinedefs();
+    }
+
+
+    void makeLineSolid(int lineIdx)
+    {
+        Line line = level.lines[lineIdx];
+        line.flags |= Line.ML_BLOCKEVERYTHING;
+        TextureId wallTexture = TexMan.CheckForTexture("wall", TexMan.Type_Any);
+        line.sidedef[Line.front].SetTexture(Side.mid, wallTexture);
+        line.sidedef[Line.back].SetTexture(Side.mid, wallTexture);
+    }
+
+    void makeLineInvisible(int lineIdx)
+    {
+        Line line = level.lines[lineIdx];
+        line.flags &= ~Line.ML_BLOCKEVERYTHING;
+        TextureId noTexture = TexMan.CheckForTexture("-", TexMan.Type_Any);
+        line.sidedef[Line.front].SetTexture(Side.mid, noTexture);
+        line.sidedef[Line.back].SetTexture(Side.mid, noTexture);
+    }
+
+    void applyCellsOnLevel()
+    {
+        for (int y = 0; y < MAZE_W; y++) {
+            for (int x = 0; x < MAZE_W; x++) {
+                for (int i = 0; i < 4; i++) {
+                    if (cells[x][y][i] != 0) {
+                        makeLineSolid(cellsToLinedefs[x][y][i]);
+                    } else {
+                        makeLineInvisible(cellsToLinedefs[x][y][i]);
+                    }
+                }
+            }
+        }
     }
 }
