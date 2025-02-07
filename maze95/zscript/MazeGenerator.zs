@@ -5,12 +5,9 @@ class MazeGenerator : EventHandler
     const TOTAL_CELLS = 100;
     int cells[MAZE_W][MAZE_W][4];
 
-    override void PlayerEntered(PlayerEvent e)
+    override void WorldLoaded(WorldEvent e)
     {
-        PlayerInfo player = players[e.PlayerNumber];
-        if (!player) return;
         generateMaze();
-        printMaze();
     }
 
     void printMaze()
@@ -106,5 +103,6 @@ class MazeGenerator : EventHandler
                 path_size -= 1;
             }
         }
+        printMaze();
     }
 }
