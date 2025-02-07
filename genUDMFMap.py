@@ -1,5 +1,6 @@
 
 from dataclasses import dataclass
+import os
 import omg
 
 @dataclass
@@ -8,7 +9,8 @@ class Line:
     v2: tuple[int]
 
 MAZE_W = 10
-TEXTURE_W = 33
+TEXTURE_W = 128
+LIGHT_LEVEL = 300
 
 def save(lines: list[list[Line]], box: list[Line]):
     vertexes : list[tuple[int]] = []
@@ -34,25 +36,28 @@ def save(lines: list[list[Line]], box: list[Line]):
         udmfMap.linedefs[-1].twosided = True
         sideIdx += 2
     sideIdx -= 1
+    for _ in range(len(udmfMap.sidedefs), sideIdx):
+        udmfMap.sidedefs.append(omg.USidedef(sector=0))
+        udmfMap.sidedefs[-1].texturemiddle = "wall"
     for line in box:
         v1Idx = addVertex(line.v1)
         v2Idx = addVertex(line.v2)
         udmfMap.linedefs.append(omg.ULinedef(v1=v1Idx, v2=v2Idx, sidefront=sideIdx))
         sideIdx += 1
-    # sideIdx -= 1
-    for _ in range(sideIdx):
+    for _ in range(len(udmfMap.sidedefs), sideIdx):
         udmfMap.sidedefs.append(omg.USidedef(sector=0))
-        udmfMap.sidedefs[-1].texturemiddle = "None"
+        udmfMap.sidedefs[-1].texturemiddle = "black"
 
-    udmfMap.sectors.append(omg.USector(textureceiling="None", texturefloor="None",
-                            heightfloor=0, heightceiling=TEXTURE_W, lightlevel=200))
+    udmfMap.sectors.append(omg.USector(textureceiling="ceiling", texturefloor="floor",
+                            heightfloor=0, heightceiling=TEXTURE_W, lightlevel=LIGHT_LEVEL))
     udmfMap.things.append(omg.UThing(x=0, y=0, ednum=1))
     udmfMap.vertexes = [omg.UVertex(*v) for v in vertexes]
 
     mapName = 'maze95'
     wad = omg.WAD()
     wad.udmfmaps[mapName] = udmfMap.to_lumps()
-    wadPath = mapName + ".wad"
+    wadPath = "maze95/maps/" + mapName + ".wad"
+    os.makedirs(os.path.dirname(wadPath), exist_ok=True)
     wad.to_file(wadPath)
 
 

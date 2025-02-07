@@ -1,13 +1,17 @@
 {
     "cSpell.words": [
+        "adddefaultmap",
         "ednum",
         "gzdoom",
         "heightceiling",
         "heightfloor",
         "iwad",
+        "levelnum",
         "lightlevel",
+        "lightmode",
         "Linedef",
         "linedefs",
+        "pixelratio",
         "Sidedef",
         "sidedefs",
         "textureceiling",
@@ -15,6 +19,7 @@
         "twosided",
         "UDMF",
         "udmfmaps",
-        "zdoom"
+        "zdoom",
+        "zscript"
     ]
 }

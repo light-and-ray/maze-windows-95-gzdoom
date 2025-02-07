@@ -1,0 +1,17 @@
+
+adddefaultmap
+{
+    pixelratio = 0.82
+    lightmode = 3
+}
+
+map maze95 lookup "maze95"
+{
+    levelnum = 1
+}
+
+GameInfo
+{
+    PlayerClasses = "Maze95Player"
+    /* AddEventHandlers = "DoorsOpenerHandler" */
+}

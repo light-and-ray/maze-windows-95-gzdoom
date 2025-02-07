@@ -1,2 +1,2 @@
 #!/bin/bash
-gzdoom -iwad DOOM.WAD -file maze95.wad +map maze95
+gzdoom -iwad DOOM.WAD -file maze95 +map maze95
