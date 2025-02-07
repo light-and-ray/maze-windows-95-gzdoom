@@ -7,6 +7,9 @@ import omg
 class Line:
     v1: tuple[int]
     v2: tuple[int]
+    cellX: int = None
+    cellY: int = None
+    cellSide: int = None
 
 MAZE_W = 10
 TEXTURE_W = 128
@@ -34,6 +37,9 @@ def save(lines: list[list[Line]], box: list[Line]):
         v2Idx = addVertex(line.v2)
         udmfMap.linedefs.append(omg.ULinedef(v1=v1Idx, v2=v2Idx, sidefront=sideIdx, sideback=sideIdx+1))
         udmfMap.linedefs[-1].twosided = True
+        udmfMap.linedefs[-1].arg0 = line.cellX
+        udmfMap.linedefs[-1].arg1 = line.cellY
+        udmfMap.linedefs[-1].arg2 = line.cellSide
         sideIdx += 2
     sideIdx -= 1
     for _ in range(len(udmfMap.sidedefs), sideIdx+1):
@@ -66,14 +72,17 @@ def save(lines: list[list[Line]], box: list[Line]):
 
 def genUDMFMap():
     lines : list[list[Line]] = []
-    for i in range(MAZE_W+1):
+    for x in range(MAZE_W):
         lines.append([])
-        for j in range(MAZE_W):
-            lines[i].append(Line(v1=(i*TEXTURE_W, j*TEXTURE_W), v2=(i*TEXTURE_W, (j+1)*TEXTURE_W)))
-    for i in range(MAZE_W):
-        lines.append([])
-        for j in range(MAZE_W+1):
-            lines[i].append(Line(v1=(i*TEXTURE_W, j*TEXTURE_W), v2=((i+1)*TEXTURE_W, j*TEXTURE_W)))
+        for y in range(MAZE_W):
+            A = (x*TEXTURE_W, (y+1)*TEXTURE_W)
+            B = ((x+1)*TEXTURE_W, (y+1)*TEXTURE_W)
+            C = ((x+1)*TEXTURE_W, y*TEXTURE_W)
+            D = (x*TEXTURE_W, y*TEXTURE_W)
+            lines[x].append(Line(A, B, x, y, 0))
+            lines[x].append(Line(B, C, x, y, 1))
+            lines[x].append(Line(C, D, x, y, 2))
+            lines[x].append(Line(D, A, x, y, 3))
 
     box : list[Line] = []
     A = (-TEXTURE_W, MAZE_W*TEXTURE_W+TEXTURE_W)

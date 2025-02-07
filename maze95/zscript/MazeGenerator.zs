@@ -5,7 +5,7 @@ class MazeGenerator : EventHandler
     const TOTAL_CELLS = 100;
     int cells[MAZE_W][MAZE_W][4];
     int cellsToLinedefs[MAZE_W][MAZE_W][4];
-    const LINEDEFS_SIZE = (MAZE_W+1)*(MAZE_W)*2;
+    const LINEDEFS_SIZE = MAZE_W*MAZE_W*4;
     int linedefs[LINEDEFS_SIZE];
 
     override void WorldLoaded(WorldEvent e)
@@ -114,39 +114,14 @@ class MazeGenerator : EventHandler
     }
 
 
-    void printCellsToLinedefs() {
-        console.printf("cellsToLinedefs:");
-        for (int y = 0; y < MAZE_W; y++) {
-            for (int x = 0; x < MAZE_W; x++) {
-                console.printf("(%d, %d): top=%d, right=%d, bottom=%d, left=%d",
-                       x, y,
-                       cellsToLinedefs[x][y][0],
-                       cellsToLinedefs[x][y][1],
-                       cellsToLinedefs[x][y][2],
-                       cellsToLinedefs[x][y][3]);
-            }
-        }
-    }
-
-
     void initCellsToLinedefs()
     {
-        for (int x = 0; x < MAZE_W; ++x)
-        {
-            for (int y = 0; y < MAZE_W; ++y)
-            {
-                int topIndex = x * MAZE_W + y;
-                int bottomIndex = (x + 1) * MAZE_W + y;
-                int leftIndex = (MAZE_W + 1) * MAZE_W + x * (MAZE_W + 1) + y;
-                int rightIndex = (MAZE_W + 1) * MAZE_W + (y + 1) * (MAZE_W + 1) + x;
-
-                cellsToLinedefs[x][y][0] = topIndex;
-                cellsToLinedefs[x][y][1] = rightIndex;
-                cellsToLinedefs[x][y][2] = bottomIndex;
-                cellsToLinedefs[x][y][3] = leftIndex;
-            }
+        for (int i = 0; i < LINEDEFS_SIZE; i++) {
+            int x = level.lines[i].args[0];
+            int y = level.lines[i].args[1];
+            int cellSide = level.lines[i].args[2];
+            cellsToLinedefs[y][x][cellSide] = i;
         }
-        printCellsToLinedefs();
     }
 
 
@@ -170,22 +145,38 @@ class MazeGenerator : EventHandler
 
     void applyCellsOnLevel()
     {
-        // for (int y = 0; y < MAZE_W; y++) {
-        //     for (int x = 0; x < MAZE_W; x++) {
-        //         for (int i = 0; i < 4; i++) {
-        //             linedefs[cellsToLinedefs[x][y][i]] = cells[x][y][i];
-        //         }
-        //     }
-        // }
+        for (int y = 0; y < MAZE_W; y++) {
+            for (int x = 0; x < MAZE_W; x++) {
+                linedefs[cellsToLinedefs[y][x][0]] = cells[y][x][0]; // top
+                // if (y+1 < MAZE_W) {
+                //     linedefs[cellsToLinedefs[y+1][x][2]] = cells[y][x][0];
+                // }
 
-        for (int i = 3; i < 4; i++) {
-            linedefs[cellsToLinedefs[0][0][i]] = 1;
-            linedefs[cellsToLinedefs[0][1][i]] = 1;
-            linedefs[cellsToLinedefs[0][2][i]] = 1;
-            linedefs[cellsToLinedefs[0][3][i]] = 1;
-            linedefs[cellsToLinedefs[0][4][i]] = 1;
-            linedefs[cellsToLinedefs[0][5][i]] = 1;
+                linedefs[cellsToLinedefs[y][x][2]] = cells[y][x][2]; // bottom
+                // if (y-1 > 0) {
+                //     linedefs[cellsToLinedefs[y-1][x][0]] = cells[y][x][2];
+                // }
+
+                linedefs[cellsToLinedefs[y][x][1]] = cells[y][x][1]; // right
+                // if (x+1 < MAZE_W) {
+                //     linedefs[cellsToLinedefs[y][x+1][3]] = cells[y][x][1];
+                // }
+
+                linedefs[cellsToLinedefs[y][x][3]] = cells[y][x][3]; // left
+                // if (x-1 > 0) {
+                //     linedefs[cellsToLinedefs[y][x-1][1]] = cells[y][x][3];
+                // }
+            }
         }
+
+        // for (int i = 0; i < 4; i++) {
+        //     linedefs[cellsToLinedefs[0][0][i]] = 1;
+        //     linedefs[cellsToLinedefs[0][1][i]] = 1;
+        //     linedefs[cellsToLinedefs[0][2][i]] = 1;
+        //     linedefs[cellsToLinedefs[0][3][i]] = 1;
+        //     linedefs[cellsToLinedefs[0][4][i]] = 1;
+        //     linedefs[cellsToLinedefs[0][5][i]] = 1;
+        // }
 
         for (int i = 0; i < LINEDEFS_SIZE; i++) {
             if (linedefs[i] != 0) {
