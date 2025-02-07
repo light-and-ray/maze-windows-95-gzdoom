@@ -90,10 +90,11 @@ class MazeGenerator : EventHandler
             //remove the border to a neighboring cell and visit it
             if (neighbor_size != 0) {
                 int next[4];
-                next[0] = neighbors[floor(frandom(0.0, 1.0)*neighbor_size)][0];
-                next[1] = neighbors[floor(frandom(0.0, 1.0)*neighbor_size)][1];
-                next[2] = neighbors[floor(frandom(0.0, 1.0)*neighbor_size)][2];
-                next[3] = neighbors[floor(frandom(0.0, 1.0)*neighbor_size)][3];
+                int random_index = floor(frandom(0.0, 1.0)*neighbor_size);
+                next[0] = neighbors[random_index][0];
+                next[1] = neighbors[random_index][1];
+                next[2] = neighbors[random_index][2];
+                next[3] = neighbors[random_index][3];
                 cells[currentCell.x][currentCell.y][next[2]] = 1;
                 cells[next[0]][next[1]][next[3]] = 1;
 
@@ -105,8 +106,8 @@ class MazeGenerator : EventHandler
                 path[path_size] = currentCell;
                 path_size += 1;
             } else {
-                    currentCell = path[path_size-1];
-                    path_size -= 1;
+                path_size -= 1;
+                currentCell = path[path_size];
             }
         }
         printCells();
@@ -180,6 +181,10 @@ class MazeGenerator : EventHandler
 
     void applyCellsOnLevel()
     {
+        for (int i = 0; i < LINEDEFS_SIZE; i++) {
+            linedefs[i] = 1;
+        }
+
         for (int y = 0; y < MAZE_W; y++) {
             for (int x = 0; x < MAZE_W; x++) {
                 for (int i = 0; i < 4; i++) {
