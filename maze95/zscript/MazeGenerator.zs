@@ -131,30 +131,19 @@ class MazeGenerator : EventHandler
 
     void initCellsToLinedefs()
     {
-        int lineIndex = 0;
-        // Initialize horizontal lines
-        for (int y = 0; y <= MAZE_W; y++) {
-            for (int x = 0; x < MAZE_W; x++) {
-                if (y > 0) {
-                    cellsToLinedefs[x][y - 1][2] = lineIndex; // bottom side of cell at (x, y-1)
-                }
-                if (y < MAZE_W) {
-                    cellsToLinedefs[x][y][0] = lineIndex; // top side of cell at (x, y)
-                }
-                lineIndex++;
-            }
-        }
+        for (int x = 0; x < MAZE_W; ++x)
+        {
+            for (int y = 0; y < MAZE_W; ++y)
+            {
+                int topIndex = x * MAZE_W + y;
+                int bottomIndex = (x + 1) * MAZE_W + y;
+                int leftIndex = (MAZE_W + 1) * MAZE_W + x * (MAZE_W + 1) + y;
+                int rightIndex = (MAZE_W + 1) * MAZE_W + (y + 1) * (MAZE_W + 1) + x;
 
-        // Initialize vertical lines
-        for (int x = 0; x <= MAZE_W; x++) {
-            for (int y = 0; y < MAZE_W; y++) {
-                if (x > 0) {
-                    cellsToLinedefs[x - 1][y][1] = lineIndex; // right side of cell at (x-1, y)
-                }
-                if (x < MAZE_W) {
-                    cellsToLinedefs[x][y][3] = lineIndex; // left side of cell at (x, y)
-                }
-                lineIndex++;
+                cellsToLinedefs[x][y][0] = topIndex;
+                cellsToLinedefs[x][y][1] = rightIndex;
+                cellsToLinedefs[x][y][2] = bottomIndex;
+                cellsToLinedefs[x][y][3] = leftIndex;
             }
         }
         printCellsToLinedefs();
@@ -189,7 +178,7 @@ class MazeGenerator : EventHandler
         //     }
         // }
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 3; i < 4; i++) {
             linedefs[cellsToLinedefs[0][0][i]] = 1;
             linedefs[cellsToLinedefs[0][1][i]] = 1;
             linedefs[cellsToLinedefs[0][2][i]] = 1;
