@@ -36,15 +36,18 @@ def save(lines: list[list[Line]], box: list[Line]):
         udmfMap.linedefs[-1].twosided = True
         sideIdx += 2
     sideIdx -= 1
-    for _ in range(len(udmfMap.sidedefs), sideIdx):
+    for _ in range(len(udmfMap.sidedefs), sideIdx+1):
         udmfMap.sidedefs.append(omg.USidedef(sector=0))
         udmfMap.sidedefs[-1].texturemiddle = "wall"
+
+    sideIdx += 1
     for line in box:
         v1Idx = addVertex(line.v1)
         v2Idx = addVertex(line.v2)
         udmfMap.linedefs.append(omg.ULinedef(v1=v1Idx, v2=v2Idx, sidefront=sideIdx))
         sideIdx += 1
-    for _ in range(len(udmfMap.sidedefs), sideIdx):
+    sideIdx -= 1
+    for _ in range(len(udmfMap.sidedefs), sideIdx+1):
         udmfMap.sidedefs.append(omg.USidedef(sector=0))
         udmfMap.sidedefs[-1].texturemiddle = "black"
 
