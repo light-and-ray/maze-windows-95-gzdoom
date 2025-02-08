@@ -14,6 +14,7 @@ class Line:
 MAZE_W = 10
 TEXTURE_W = 128
 LIGHT_LEVEL = 300
+BOX_GAP = 1
 
 def save(lines: list[list[Line]], box: list[Line]):
     vertexes : list[tuple[int]] = []
@@ -85,10 +86,10 @@ def genUDMFMap():
             lines[x].append(Line(D, A, x, y, 3))
 
     box : list[Line] = []
-    A = (-TEXTURE_W, MAZE_W*TEXTURE_W+TEXTURE_W)
-    B = (MAZE_W*TEXTURE_W+TEXTURE_W, MAZE_W*TEXTURE_W+TEXTURE_W)
-    C = (MAZE_W*TEXTURE_W+TEXTURE_W, -TEXTURE_W)
-    D = (-TEXTURE_W, -TEXTURE_W)
+    A = (-BOX_GAP, MAZE_W*TEXTURE_W+BOX_GAP)
+    B = (MAZE_W*TEXTURE_W+BOX_GAP, MAZE_W*TEXTURE_W+BOX_GAP)
+    C = (MAZE_W*TEXTURE_W+BOX_GAP, -BOX_GAP)
+    D = (-BOX_GAP, -BOX_GAP)
 
     box.append(Line(A, B))
     box.append(Line(B, C))
