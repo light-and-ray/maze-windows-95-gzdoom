@@ -110,7 +110,7 @@ class MazeGenerator : EventHandler
                 currentCell = path[path_size];
             }
         }
-        printCells();
+        // printCells();
     }
 
 
@@ -145,41 +145,21 @@ class MazeGenerator : EventHandler
 
     void applyCellsOnLevel()
     {
+        for (int i = 0; i < LINEDEFS_SIZE; i++) {
+            linedefs[i] = 1;
+        }
+
         for (int y = 0; y < MAZE_W; y++) {
             for (int x = 0; x < MAZE_W; x++) {
                 linedefs[cellsToLinedefs[y][x][0]] = cells[y][x][0]; // top
-                // if (y+1 < MAZE_W) {
-                //     linedefs[cellsToLinedefs[y+1][x][2]] = cells[y][x][0];
-                // }
-
                 linedefs[cellsToLinedefs[y][x][2]] = cells[y][x][2]; // bottom
-                // if (y-1 > 0) {
-                //     linedefs[cellsToLinedefs[y-1][x][0]] = cells[y][x][2];
-                // }
-
                 linedefs[cellsToLinedefs[y][x][1]] = cells[y][x][1]; // right
-                // if (x+1 < MAZE_W) {
-                //     linedefs[cellsToLinedefs[y][x+1][3]] = cells[y][x][1];
-                // }
-
                 linedefs[cellsToLinedefs[y][x][3]] = cells[y][x][3]; // left
-                // if (x-1 > 0) {
-                //     linedefs[cellsToLinedefs[y][x-1][1]] = cells[y][x][3];
-                // }
             }
         }
 
-        // for (int i = 0; i < 4; i++) {
-        //     linedefs[cellsToLinedefs[0][0][i]] = 1;
-        //     linedefs[cellsToLinedefs[0][1][i]] = 1;
-        //     linedefs[cellsToLinedefs[0][2][i]] = 1;
-        //     linedefs[cellsToLinedefs[0][3][i]] = 1;
-        //     linedefs[cellsToLinedefs[0][4][i]] = 1;
-        //     linedefs[cellsToLinedefs[0][5][i]] = 1;
-        // }
-
         for (int i = 0; i < LINEDEFS_SIZE; i++) {
-            if (linedefs[i] != 0) {
+            if (linedefs[i] == 0) {
                 makeLineSolid(i);
             } else {
                 makeLineInvisible(i);
