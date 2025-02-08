@@ -16,6 +16,7 @@ clearepisodes
 episode maze95
 {
    name = "Maze Windows 95"
+   NoSkillMenu
 }
 
 GameInfo
