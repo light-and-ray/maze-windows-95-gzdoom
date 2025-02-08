@@ -1,0 +1,5 @@
+HardwareShader PostProcess Scene
+{
+    shader "shaders/horizontal_stretch.fp" 350
+    enabled
+}
