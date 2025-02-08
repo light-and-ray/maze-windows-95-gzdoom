@@ -7,7 +7,7 @@ class Maze95Player : DoomPlayer replaces DoomPlayer
         Player.ViewHeight 64;
         Player.AttackZOffset 32;
         Player.ViewBob 0;
-        Player.StartItem "";
+        Player.StartItem "Z_NashMove";
     }
 
 }
