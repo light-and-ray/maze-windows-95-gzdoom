@@ -284,13 +284,13 @@ class MazeGenerator : EventHandler
             if (cellSide == SIDE_TOP && (y+1) < MAZE_W) {
                 line = level.lines[cellsToLinedefs[y+1][x][SIDE_BOTTOM]];
             }
-            if (cellSide == SIDE_BOTTOM && (y-1) > 0) {
+            if (cellSide == SIDE_BOTTOM && (y-1) >= 0) {
                 line = level.lines[cellsToLinedefs[y-1][x][SIDE_TOP]];
             }
             if (cellSide == SIDE_RIGHT && (x+1) < MAZE_W) {
                 line = level.lines[cellsToLinedefs[y][x+1][SIDE_LEFT]];
             }
-            if (cellSide == SIDE_LEFT && (x-1) > 0) {
+            if (cellSide == SIDE_LEFT && (x-1) >= 0) {
                 line = level.lines[cellsToLinedefs[y][x-1][SIDE_RIGHT]];
             }
             line.sidedef[Line.front].SetTexture(Side.mid, openglWallTexture);
