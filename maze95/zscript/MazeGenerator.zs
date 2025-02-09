@@ -36,7 +36,7 @@ class MazeGenerator : EventHandler
     void restart()
     {
         if (completedLevels > 0) {
-            console.printf("Completed levels streak: %d", completedLevels);
+            player.A_Print(String.format("Completed levels streak: %d", completedLevels), 2.5, "CONFONT");
         }
         completedLevels++;
         removeAllThings();
