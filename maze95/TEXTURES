@@ -1,9 +1,9 @@
 
 sprite SMILA0, 126, 126
 {
-    XScale 1.75
-    YScale 1.75
-    Offset 62, 126
+    XScale 2.5
+    YScale 2.5
+    Offset 63, 146
     Patch "patches/smiley.png", 0, 0
     {
         Alpha 0.5
