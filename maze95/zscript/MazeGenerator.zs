@@ -17,9 +17,12 @@ class MazeGenerator : EventHandler
 
     const OPENGL_WALLS_NUM = 3;
     const OPENGL_LOGOS_NUM = 2;
+    const THINGS_N = 1 /*player*/ + 1 /*smiley*/ + OPENGL_WALLS_NUM + OPENGL_LOGOS_NUM;
+
 
     PlayerPawn player;
     Array<Actor> actorsToRemove;
+    int completedLevels;
 
 
     override void PlayerEntered (PlayerEvent e)
@@ -32,6 +35,10 @@ class MazeGenerator : EventHandler
 
     void restart()
     {
+        if (completedLevels > 0) {
+            console.printf("Completed levels streak: %d", completedLevels);
+        }
+        completedLevels++;
         removeAllThings();
         generateMaze();
         applyCellsOnLevel();
@@ -191,23 +198,22 @@ class MazeGenerator : EventHandler
 
     void fillThings()
     {
-        int things[10][2];
-        int things_n = 1 /*player*/ + 1 /*smiley*/ + OPENGL_WALLS_NUM + OPENGL_LOGOS_NUM;
+        int things[THINGS_N][2];
         int things_current = 0;
-        int near_threshold = 2;
+        int near_threshold = 1;
 
         // get random things coordinates
 
         int x, y, i, j, count = 0;
         bool unique;
 
-        while (count < things_n) {
+        while (count < THINGS_N) {
             x = random(0, MAZE_W - 1);
             y = random(0, MAZE_W - 1);
 
             unique = true;
             for (i = 0; i < count; i++) {
-                if (abs(x - things[i][0]) < near_threshold && abs(y - things[i][1]) < near_threshold) {
+                if (abs(x - things[i][0]) <= near_threshold && abs(y - things[i][1]) <= near_threshold) {
                     unique = false;
                     break;
                 }
@@ -220,9 +226,9 @@ class MazeGenerator : EventHandler
             }
         }
 
-        for (int i = 0; i < things_n; i++) {
-            console.printf("(%d, %d)", things[i][0], things[i][1]);
-        }
+        // for (int i = 0; i < THINGS_N; i++) {
+        //     console.printf("(%d, %d)", things[i][0], things[i][1]);
+        // }
 
         // fill things
 
@@ -248,7 +254,6 @@ class MazeGenerator : EventHandler
         startMarkerPos.x = playerPos.x + startMarkerOffset * cos(playerAngle);
         startMarkerPos.y = playerPos.y + startMarkerOffset * sin(playerAngle);
         startMarkerPos.z = 0.5 * TEXTURE_W;
-        things_current++;
         Actor a;
         a = Actor.Spawn("StartMarker", startMarkerPos);
         actorsToRemove.push(a);
