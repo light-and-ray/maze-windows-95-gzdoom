@@ -16,6 +16,7 @@
         "linedefs",
         "nashmove",
         "NOGRAVITY",
+        "Nums",
         "OPENGL",
         "openglwall",
         "pixelratio",

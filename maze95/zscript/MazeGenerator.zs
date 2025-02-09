@@ -24,21 +24,39 @@ class MazeGenerator : EventHandler
     override void PlayerEntered (PlayerEvent e)
     {
         player = players[e.PlayerNumber].mo;
-        generateMaze();
         initCellsToLinedefs();
+        restart();
+    }
+
+
+    void restart()
+    {
+        removeAllThings();
+        generateMaze();
         applyCellsOnLevel();
         fillThings();
     }
 
-    void printCells()
+    void removeAllThings()
     {
-        console.printf("cells:");
-        for (int i = 0; i < MAZE_W; i++) {
-            string line = "";
-            for (int j = 0; j < MAZE_W; j++) {
-                line = string.format("%s, [%d, %d, %d, %d] ", line, cells[i][j][0], cells[i][j][1], cells[i][j][2], cells[i][j][3]);
+        ActorIterator it;
+        static const string actorsToRemove[] =
+        {
+            "StartMarker",
+            "Smiley",
+            "OpenGLLogo"
+        };
+
+        for (int i = 0; i < actorsToRemove.size(); i++)
+        {
+            it = level.CreateActorIterator(0, actorsToRemove[i]);
+            while (true)
+            {
+                Actor a = it.next();
+                console.printf("!!! %d", i);
+                if (!a) break;
+                a.destroy();
             }
-            console.printf(line);
         }
     }
 

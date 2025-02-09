@@ -24,8 +24,4 @@ GameInfo
     PlayerClasses = "Maze95Player"
 }
 
-DoomEdNums
-{
-    20110 = "Smiley"
-}
 

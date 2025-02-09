@@ -13,6 +13,13 @@ class Smiley : Actor
             SMIL A -1;
             Loop;
     }
+
+    override bool Used(Actor user)
+    {
+        MazeGenerator generator = MazeGenerator(EventHandler.Find("MazeGenerator"));
+        generator.restart();
+        return true;
+    }
 }
 
 
