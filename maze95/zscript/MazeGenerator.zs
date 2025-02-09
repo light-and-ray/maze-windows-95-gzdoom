@@ -2,17 +2,21 @@
 class MazeGenerator : EventHandler
 {
     const MAZE_W = 10;
-    const TOTAL_CELLS = 100;
+    const TOTAL_CELLS = MAZE_W*MAZE_W;
+    const TEXTURE_W = 128;
     int cells[MAZE_W][MAZE_W][4];
     int cellsToLinedefs[MAZE_W][MAZE_W][4];
     const LINEDEFS_SIZE = MAZE_W*MAZE_W*4;
     int linedefs[LINEDEFS_SIZE];
+    PlayerPawn player;
 
-    override void WorldLoaded(WorldEvent e)
+    override void PlayerEntered (PlayerEvent e)
     {
+        player = players[e.PlayerNumber].mo;
         generateMaze();
         initCellsToLinedefs();
         applyCellsOnLevel();
+        fillThings();
     }
 
     void printCells()
@@ -166,4 +170,67 @@ class MazeGenerator : EventHandler
             }
         }
     }
+
+
+    void fillThings()
+    {
+        int things[10][2];
+        int things_n = 10;
+        int things_current = 0;
+        int near_threshold = 2;
+
+        // get random things coordinates
+        int x, y, i, j, count = 0;
+        bool unique;
+
+        while (count < things_n) {
+            x = random(0, MAZE_W - 1);
+            y = random(0, MAZE_W - 1);
+
+            unique = true;
+            for (i = 0; i < count; i++) {
+                if (abs(x - things[i][0]) < near_threshold && abs(y - things[i][1]) < near_threshold) {
+                    unique = false;
+                    break;
+                }
+            }
+
+            if (unique) {
+                things[count][0] = x;
+                things[count][1] = y;
+                count++;
+            }
+        }
+
+        for (int i = 0; i < things_n; i++) {
+            console.printf("(%d, %d)", things[i][0], things[i][1]);
+        }
+
+        // fill things
+
+        Vector3 playerPos;
+        int playerCellX = things[things_current][0];
+        int playerCellY = things[things_current][1];
+        playerPos.x = (playerCellX + 0.5) * TEXTURE_W;
+        playerPos.y = (playerCellY + 0.5) * TEXTURE_W;
+        playerPos.z = 0;
+        things_current++;
+        player.setOrigin(playerPos, true);
+        for (int i = 0; i < 4; i++) {
+            if (cells[playerCellY][playerCellX][i] != 0) {
+                player.A_SetAngle(-90 + 90*i);
+                break;
+            }
+        }
+
+        Vector3 smileyPos;
+        smileyPos.x = (things[things_current][0] + 0.5) * TEXTURE_W;
+        smileyPos.y = (things[things_current][1] + 0.5) * TEXTURE_W;
+        smileyPos.z = 0.5 * TEXTURE_W;
+        things_current++;
+        Actor.Spawn("Smiley", smileyPos);
+
+    }
+
+
 }
