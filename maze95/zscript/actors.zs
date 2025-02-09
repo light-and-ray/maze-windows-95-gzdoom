@@ -30,3 +30,17 @@ class OpenGLLogo : Actor
     }
 }
 
+class StartMarker : Actor
+{
+    Default
+    {
+        +NOGRAVITY;
+    }
+    States
+    {
+        Spawn:
+            STRT A -1;
+            Loop;
+    }
+}
+

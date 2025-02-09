@@ -14,9 +14,21 @@ sprite SMILA0, 126, 126
 sprite OPGLA0, 205, 25
 {
     XScale 3.67
-    YScale 2.33
+    YScale 2
     Offset 102, 12
     Patch "patches/opengl.png", 0, 0
+    {
+        Alpha 0.5
+        Style CopyNewAlpha
+    }
+}
+
+sprite STRTA0, 509, 128
+{
+    XScale 7
+    YScale 2
+    Offset 250, 64
+    Patch "patches/start.png", 0, 0
     {
         Alpha 0.5
         Style CopyNewAlpha

@@ -228,12 +228,22 @@ class MazeGenerator : EventHandler
         playerPos.z = 0;
         things_current++;
         player.setOrigin(playerPos, true);
+        double playerAngle;
         for (int i = 0; i < 4; i++) {
             if (cells[playerCellY][playerCellX][i] != 0) {
-                player.A_SetAngle(-90 + 90*i);
+                playerAngle = -90 + 90*i;
+                player.A_SetAngle(playerAngle);
                 break;
             }
         }
+
+        Vector3 startMarkerPos;
+        int startMarkerOffset = 50;
+        startMarkerPos.x = playerPos.x + startMarkerOffset * cos(playerAngle);
+        startMarkerPos.y = playerPos.y + startMarkerOffset * sin(playerAngle);
+        startMarkerPos.z = 0.5 * TEXTURE_W;
+        things_current++;
+        Actor.Spawn("StartMarker", startMarkerPos);
 
         Vector3 smileyPos;
         smileyPos.x = (things[things_current][0] + 0.5) * TEXTURE_W;
