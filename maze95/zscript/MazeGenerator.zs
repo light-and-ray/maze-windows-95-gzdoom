@@ -19,6 +19,7 @@ class MazeGenerator : EventHandler
     const OPENGL_LOGOS_NUM = 2;
 
     PlayerPawn player;
+    Array<Actor> actorsToRemove;
 
 
     override void PlayerEntered (PlayerEvent e)
@@ -39,24 +40,11 @@ class MazeGenerator : EventHandler
 
     void removeAllThings()
     {
-        ActorIterator it;
-        static const string actorsToRemove[] =
+        while (actorsToRemove.size() != 0)
         {
-            "StartMarker",
-            "Smiley",
-            "OpenGLLogo"
-        };
-
-        for (int i = 0; i < actorsToRemove.size(); i++)
-        {
-            it = level.CreateActorIterator(0, actorsToRemove[i]);
-            while (true)
-            {
-                Actor a = it.next();
-                console.printf("!!! %d", i);
-                if (!a) break;
-                a.destroy();
-            }
+            Actor a = actorsToRemove[actorsToRemove.size() - 1];
+            actorsToRemove.pop();
+            a.destroy();
         }
     }
 
@@ -261,14 +249,17 @@ class MazeGenerator : EventHandler
         startMarkerPos.y = playerPos.y + startMarkerOffset * sin(playerAngle);
         startMarkerPos.z = 0.5 * TEXTURE_W;
         things_current++;
-        Actor.Spawn("StartMarker", startMarkerPos);
+        Actor a;
+        a = Actor.Spawn("StartMarker", startMarkerPos);
+        actorsToRemove.push(a);
 
         Vector3 smileyPos;
         smileyPos.x = (things[things_current][0] + 0.5) * TEXTURE_W;
         smileyPos.y = (things[things_current][1] + 0.5) * TEXTURE_W;
         smileyPos.z = 0.5 * TEXTURE_W;
         things_current++;
-        Actor.Spawn("Smiley", smileyPos);
+        a = Actor.Spawn("Smiley", smileyPos);
+        actorsToRemove.push(a);
 
         TextureId openglWallTexture = TexMan.CheckForTexture("openglwall", TexMan.Type_Any);
         for (int i = 0; i < OPENGL_WALLS_NUM; i++)
@@ -309,7 +300,8 @@ class MazeGenerator : EventHandler
             openglLogoPos.y = (things[things_current][1] + 0.5) * TEXTURE_W;
             openglLogoPos.z = 0.5 * TEXTURE_W;
             things_current++;
-            Actor.Spawn("OpenGLLogo", openglLogoPos);
+            a = Actor.Spawn("OpenGLLogo", openglLogoPos);
+            actorsToRemove.push(a);
         }
 
     }
