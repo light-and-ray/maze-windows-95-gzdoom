@@ -16,6 +16,7 @@ class MazeGenerator : EventHandler
     const SIDE_LEFT = 3;
 
     const OPENGL_WALLS_NUM = 3;
+    const OPENGL_LOGOS_NUM = 2;
 
     PlayerPawn player;
 
@@ -185,12 +186,12 @@ class MazeGenerator : EventHandler
     void fillThings()
     {
         int things[10][2];
-        int things_n = 1 /*player*/ + 1 /*smiley*/ + OPENGL_WALLS_NUM;
+        int things_n = 1 /*player*/ + 1 /*smiley*/ + OPENGL_WALLS_NUM + OPENGL_LOGOS_NUM;
         int things_current = 0;
         int near_threshold = 2;
 
         // get random things coordinates
-    
+
         int x, y, i, j, count = 0;
         bool unique;
 
@@ -270,6 +271,17 @@ class MazeGenerator : EventHandler
             }
             line.sidedef[Line.front].SetTexture(Side.mid, openglWallTexture);
             line.sidedef[Line.back].SetTexture(Side.mid, openglWallTexture);
+        }
+
+
+        for (int i = 0; i < OPENGL_LOGOS_NUM; i++)
+        {
+            Vector3 openglLogoPos;
+            openglLogoPos.x = (things[things_current][0] + 0.5) * TEXTURE_W;
+            openglLogoPos.y = (things[things_current][1] + 0.5) * TEXTURE_W;
+            openglLogoPos.z = 0.5 * TEXTURE_W;
+            things_current++;
+            Actor.Spawn("OpenGLLogo", openglLogoPos);
         }
 
     }

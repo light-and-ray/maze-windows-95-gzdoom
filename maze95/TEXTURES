@@ -11,6 +11,19 @@ sprite SMILA0, 126, 126
     }
 }
 
+sprite OPGLA0, 205, 25
+{
+    XScale 5.5
+    YScale 3.5
+    Offset 102, 12
+    Patch "patches/opengl.png", 0, 0
+    {
+        Alpha 0.5
+        Style CopyNewAlpha
+    }
+}
+
+
 texture openglwall, 256, 256
 {
     XScale 2.0

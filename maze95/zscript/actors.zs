@@ -14,3 +14,19 @@ class Smiley : Actor
             Loop;
     }
 }
+
+
+class OpenGLLogo : Actor
+{
+    Default
+    {
+        +NOGRAVITY;
+    }
+    States
+    {
+        Spawn:
+            OPGL A -1;
+            Loop;
+    }
+}
+
