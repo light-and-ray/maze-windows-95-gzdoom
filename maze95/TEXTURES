@@ -10,3 +10,10 @@ sprite SMILA0, 126, 126
         Style CopyNewAlpha
     }
 }
+
+texture openglwall, 256, 256
+{
+    XScale 2.0
+    YScale 2.0
+    Patch "patches/openglwall.png", 0, 0
+}

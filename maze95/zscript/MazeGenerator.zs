@@ -4,11 +4,21 @@ class MazeGenerator : EventHandler
     const MAZE_W = 10;
     const TOTAL_CELLS = MAZE_W*MAZE_W;
     const TEXTURE_W = 128;
+    const LINEDEFS_SIZE = MAZE_W*MAZE_W*4;
+
+    int linedefs[LINEDEFS_SIZE];
     int cells[MAZE_W][MAZE_W][4];
     int cellsToLinedefs[MAZE_W][MAZE_W][4];
-    const LINEDEFS_SIZE = MAZE_W*MAZE_W*4;
-    int linedefs[LINEDEFS_SIZE];
+
+    const SIDE_TOP = 2;
+    const SIDE_RIGHT = 1;
+    const SIDE_BOTTOM = 0;
+    const SIDE_LEFT = 3;
+
+    const OPENGL_WALLS_NUM = 3;
+
     PlayerPawn player;
+
 
     override void PlayerEntered (PlayerEvent e)
     {
@@ -62,7 +72,7 @@ class MazeGenerator : EventHandler
         while (visited < TOTAL_CELLS) {
             //generate array of valid unvisited neighbor cells
             int potential[4][4];
-            potential[0][0] = currentCell.x-1;  // top
+            potential[0][0] = currentCell.x-1;  // bottom
             potential[0][1] = currentCell.y;
             potential[0][2] = 0;
             potential[0][3] = 2;
@@ -70,7 +80,7 @@ class MazeGenerator : EventHandler
             potential[1][1] = currentCell.y+1;
             potential[1][2] = 1;
             potential[1][3] = 3;
-            potential[2][0] = currentCell.x+1; // bottom
+            potential[2][0] = currentCell.x+1; // top
             potential[2][1] = currentCell.y;
             potential[2][2] = 2;
             potential[2][3] = 0;
@@ -175,11 +185,12 @@ class MazeGenerator : EventHandler
     void fillThings()
     {
         int things[10][2];
-        int things_n = 10;
+        int things_n = 1 /*player*/ + 1 /*smiley*/ + OPENGL_WALLS_NUM;
         int things_current = 0;
         int near_threshold = 2;
 
         // get random things coordinates
+    
         int x, y, i, j, count = 0;
         bool unique;
 
@@ -229,6 +240,37 @@ class MazeGenerator : EventHandler
         smileyPos.z = 0.5 * TEXTURE_W;
         things_current++;
         Actor.Spawn("Smiley", smileyPos);
+
+        TextureId openglWallTexture = TexMan.CheckForTexture("openglwall", TexMan.Type_Any);
+        for (int i = 0; i < OPENGL_WALLS_NUM; i++)
+        {
+            int x = things[things_current][0];
+            int y = things[things_current][1];
+            things_current++;
+            int cellSide;
+            while (true) {
+                cellSide = random(0, 3);
+                if (cells[y][x][cellSide] == 0) break;
+            }
+            Line line;
+            line = level.lines[cellsToLinedefs[y][x][cellSide]];
+            line.sidedef[Line.front].SetTexture(Side.mid, openglWallTexture);
+            line.sidedef[Line.back].SetTexture(Side.mid, openglWallTexture);
+            if (cellSide == SIDE_TOP && (y+1) < MAZE_W) {
+                line = level.lines[cellsToLinedefs[y+1][x][SIDE_BOTTOM]];
+            }
+            if (cellSide == SIDE_BOTTOM && (y-1) > 0) {
+                line = level.lines[cellsToLinedefs[y-1][x][SIDE_TOP]];
+            }
+            if (cellSide == SIDE_RIGHT && (x+1) < MAZE_W) {
+                line = level.lines[cellsToLinedefs[y][x+1][SIDE_LEFT]];
+            }
+            if (cellSide == SIDE_LEFT && (x-1) > 0) {
+                line = level.lines[cellsToLinedefs[y][x-1][SIDE_RIGHT]];
+            }
+            line.sidedef[Line.front].SetTexture(Side.mid, openglWallTexture);
+            line.sidedef[Line.back].SetTexture(Side.mid, openglWallTexture);
+        }
 
     }
 
