@@ -52,6 +52,7 @@ class OpenGLLogo : Actor
     Default
     {
         +NOGRAVITY;
+        +FORCEXYBILLBOARD;
     }
     States
     {
