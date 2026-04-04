@@ -86,7 +86,22 @@ class PlatonicSolid : Actor
     States
     {
         Spawn:
+            TNT1 A 0 NoDelay A_JumpIf(random(1, 4) == 4, "tetrahedron");
+            TNT1 A 0 A_JumpIf(random(1, 3) == 3, "octahedron");
+            TNT1 A 0 A_JumpIf(random(1, 2) == 2, "dodecahedron");
+            TNT1 A 0 A_JumpIf(random(1, 1) == 1, "icosahedron");
+            loop;
+        tetrahedron:
             PLAT A 10;
+            loop;
+        octahedron:
+            PLAT B 10;
+            loop;
+        dodecahedron:
+            PLAT C 10;
+            loop;
+        icosahedron:
+            PLAT D 10;
             loop;
     }
 }
