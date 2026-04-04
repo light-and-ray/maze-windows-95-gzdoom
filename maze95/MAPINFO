@@ -3,6 +3,7 @@ adddefaultmap
 {
     pixelratio = 1.0
     lightmode = 3
+    music = "Nostalgic Soundscapes S01E02 _ Forgotten _ Windows 95 Retro Ambient-DrmpZtxr0kY.mp3"
 }
 
 map maze95 lookup "maze95"
