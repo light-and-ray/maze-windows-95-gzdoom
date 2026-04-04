@@ -76,3 +76,17 @@ class StartMarker : Actor
     }
 }
 
+
+class PlatonicSolid : Actor
+{
+    Default
+    {
+        +NOGRAVITY;
+    }
+    States
+    {
+        Spawn:
+            PLAT A 10;
+            loop;
+    }
+}

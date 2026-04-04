@@ -3,3 +3,8 @@ HardwareShader PostProcess Scene
     shader "shaders/horizontal_stretch.fp" 350
     enabled
 }
+
+material texture "gray"
+{
+    shader "shaders/fake_contrast.fp"
+}

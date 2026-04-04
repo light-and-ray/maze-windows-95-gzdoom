@@ -17,7 +17,8 @@ class MazeGenerator : EventHandler
 
     const OPENGL_WALLS_NUM = 3;
     const OPENGL_LOGOS_NUM = 2;
-    const THINGS_N = 1 /*player*/ + 1 /*smiley*/ + OPENGL_WALLS_NUM + OPENGL_LOGOS_NUM;
+    const PLATONIC_SOLIDS_MAX_NUM = 6;
+    const THINGS_N = 1 /*player*/ + 1 /*smiley*/ + OPENGL_WALLS_NUM + OPENGL_LOGOS_NUM + PLATONIC_SOLIDS_MAX_NUM;
 
 
     PlayerPawn player;
@@ -306,6 +307,18 @@ class MazeGenerator : EventHandler
             openglLogoPos.z = 0.5 * TEXTURE_W;
             things_current++;
             a = Actor.Spawn("OpenGLLogo", openglLogoPos);
+            actorsToRemove.push(a);
+        }
+
+
+        for (int i = 0; i < PLATONIC_SOLIDS_MAX_NUM; i++)
+        {
+            Vector3 platonicSolidPos;
+            platonicSolidPos.x = (things[things_current][0] + 0.5) * TEXTURE_W;
+            platonicSolidPos.y = (things[things_current][1] + 0.5) * TEXTURE_W;
+            platonicSolidPos.z = 0.25 * TEXTURE_W;
+            things_current++;
+            a = Actor.Spawn("PlatonicSolid", platonicSolidPos);
             actorsToRemove.push(a);
         }
 
