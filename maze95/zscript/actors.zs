@@ -129,3 +129,18 @@ class PlatonicSolid : Actor
         }
     }
 }
+
+
+class MissingShadersWarning : Actor
+{
+    Default
+    {
+        +NOGRAVITY;
+    }
+    States
+    {
+        Spawn:
+            ADVA A 10;
+            loop;
+    }
+}

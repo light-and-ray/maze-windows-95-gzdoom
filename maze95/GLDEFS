@@ -8,3 +8,8 @@ material texture "gray"
 {
     shader "shaders/fake_contrast.fp"
 }
+
+material sprite "ADVAA0"
+{
+    shader "shaders/missing_shaders_warning.fp"
+}

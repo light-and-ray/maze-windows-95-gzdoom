@@ -42,3 +42,16 @@ texture openglwall, 256, 256
     YScale 2.0
     Patch "patches/openglwall.png", 0, 0
 }
+
+sprite ADVAA0, 234, 169
+{
+    XScale 2
+    YScale 2
+    Offset 117, 84
+    Patch "patches/missingShaders.png", 0, 0
+    {
+        Alpha 0.5
+        Style CopyNewAlpha
+    }
+}
+
