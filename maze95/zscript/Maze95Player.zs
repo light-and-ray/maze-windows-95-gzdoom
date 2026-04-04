@@ -3,7 +3,7 @@ class Maze95Player : DoomPlayer replaces DoomPlayer
 {
     bool upSideDown;
     bool _oldUpSideDown;
-    int tmpRoll;
+    const ROLL_STEP = 6;
     Default
     {
         Height 64;
@@ -18,18 +18,18 @@ class Maze95Player : DoomPlayer replaces DoomPlayer
             PLAY A 0 NoDelay _onSpawn();
             goto Normal;
         NormalTransition:
-            PLAY A 1 A_SetRoll(roll-5, SPF_INTERPOLATE);
-            PLAY A 0 A_JumpIf(roll == 0, "Normal");
+            PLAY A 1 A_SetRoll(roll-ROLL_STEP, SPF_INTERPOLATE);
+            PLAY A 0 A_JumpIf(roll <= 0, "Normal");
             loop;
         Normal:
-            PLAY A 1;
+            PLAY A 1 A_SetRoll(0);
             loop;
         UpSideDownTransition:
-            PLAY A 1 A_SetRoll(roll+5, SPF_INTERPOLATE);
-            PLAY A 0 A_JumpIf(roll == 180, "UpSideDown");
+            PLAY A 1 A_SetRoll(roll+ROLL_STEP, SPF_INTERPOLATE);
+            PLAY A 0 A_JumpIf(roll >= 180, "UpSideDown");
             loop;
         UpSideDown:
-            PLAY A 1;
+            PLAY A 1 A_SetRoll(180);
             loop;
     }
 
@@ -48,7 +48,6 @@ class Maze95Player : DoomPlayer replaces DoomPlayer
 
     void _onSpawn()
     {
-        A_SetRoll(0);
         self.upSideDown = false;
         self._oldUpSideDown = false;
     }

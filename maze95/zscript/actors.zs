@@ -88,10 +88,7 @@ class PlatonicSolid : Actor
     States
     {
         Spawn:
-            TNT1 A 0 NoDelay A_JumpIf(random(1, 4) == 4, "tetrahedron");
-            TNT1 A 0 A_JumpIf(random(1, 3) == 3, "octahedron");
-            TNT1 A 0 A_JumpIf(random(1, 2) == 2, "dodecahedron");
-            TNT1 A 0 A_JumpIf(random(1, 1) == 1, "icosahedron");
+            TNT1 A 0 NoDelay setRandomModel();
             loop;
         tetrahedron:
             PLAT A 10;
@@ -106,6 +103,7 @@ class PlatonicSolid : Actor
             PLAT D 10;
             loop;
     }
+
     override bool CanCollideWith(Actor other, bool passive)
     {
         if (other is "Maze95Player")
@@ -115,5 +113,19 @@ class PlatonicSolid : Actor
             self.destroy();
         }
         return false;
+    }
+
+    void setRandomModel()
+    {
+        int modelIndex = random(1, 4);
+        if (modelIndex == 1) {
+            SetState(ResolveState("tetrahedron"));
+        } else if (modelIndex == 2) {
+            SetState(ResolveState("octahedron"));
+        } else if (modelIndex == 3) {
+            SetState(ResolveState("dodecahedron"));
+        } else if (modelIndex == 4) {
+            SetState(ResolveState("icosahedron"));
+        }
     }
 }

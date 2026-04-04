@@ -2,7 +2,7 @@ Model PlatonicSolid
 {
     Model 0 "models/tetrahedron.obj"
     Skin 0 "gray"
-    Scale 25.0 25.0 30.0 // 25 = 30 / 1.2
+    Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
     ROTATING
     FrameIndex PLAT A 0 0
 }
@@ -11,7 +11,7 @@ Model PlatonicSolid
 {
     Model 0 "models/octahedron.obj"
     Skin 0 "gray"
-    Scale 25.0 25.0 30.0 // 25 = 30 / 1.2
+    Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
     ROTATING
     FrameIndex PLAT B 0 0
 }
@@ -20,7 +20,7 @@ Model PlatonicSolid
 {
     Model 0 "models/dodecahedron.obj"
     Skin 0 "gray"
-    Scale 25.0 25.0 30.0 // 25 = 30 / 1.2
+    Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
     ROTATING
     FrameIndex PLAT C 0 0
 }
@@ -29,7 +29,7 @@ Model PlatonicSolid
 {
     Model 0 "models/icosahedron.obj"
     Skin 0 "gray"
-    Scale 25.0 25.0 30.0 // 25 = 30 / 1.2
+    Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
     ROTATING
     FrameIndex PLAT D 0 0
 }
