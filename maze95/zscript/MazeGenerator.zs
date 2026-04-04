@@ -21,14 +21,14 @@ class MazeGenerator : EventHandler
     const THINGS_N = 1 /*player*/ + 1 /*smiley*/ + OPENGL_WALLS_NUM + OPENGL_LOGOS_NUM + PLATONIC_SOLIDS_MAX_NUM;
 
 
-    PlayerPawn player;
+    Maze95Player player;
     Array<Actor> actorsToRemove;
     int completedLevels;
 
 
     override void PlayerEntered (PlayerEvent e)
     {
-        player = players[e.PlayerNumber].mo;
+        player = Maze95Player(players[e.PlayerNumber].mo);
         initCellsToLinedefs();
         restart();
     }
@@ -44,6 +44,7 @@ class MazeGenerator : EventHandler
         generateMaze();
         applyCellsOnLevel();
         fillThings();
+        self.player.setSpawnState();
     }
 
     void removeAllThings()
@@ -52,7 +53,9 @@ class MazeGenerator : EventHandler
         {
             Actor a = actorsToRemove[actorsToRemove.size() - 1];
             actorsToRemove.pop();
-            a.destroy();
+            if (a) {
+                a.destroy();
+            }
         }
     }
 

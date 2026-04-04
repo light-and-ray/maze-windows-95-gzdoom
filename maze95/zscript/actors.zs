@@ -82,6 +82,7 @@ class PlatonicSolid : Actor
     Default
     {
         +NOGRAVITY;
+        +SOLID;
     }
     States
     {
@@ -103,5 +104,15 @@ class PlatonicSolid : Actor
         icosahedron:
             PLAT D 10;
             loop;
+    }
+    override bool CanCollideWith(Actor other, bool passive)
+    {
+        if (other is "Maze95Player")
+        {
+            Maze95Player player = Maze95Player(other);
+            player.upSideDown = !player.upSideDown;
+            self.destroy();
+        }
+        return false;
     }
 }
