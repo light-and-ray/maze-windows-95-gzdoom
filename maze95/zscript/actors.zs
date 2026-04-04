@@ -83,6 +83,7 @@ class PlatonicSolid : Actor
     {
         +NOGRAVITY;
         +SOLID;
+        Radius 40;
     }
     States
     {

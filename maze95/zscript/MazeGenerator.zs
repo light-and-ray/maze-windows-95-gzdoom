@@ -314,8 +314,10 @@ class MazeGenerator : EventHandler
         }
 
 
+        int platonicSolidsNum = random(1, PLATONIC_SOLIDS_MAX_NUM);
         for (int i = 0; i < PLATONIC_SOLIDS_MAX_NUM; i++)
         {
+            if (i >= platonicSolidsNum) continue;
             Vector3 platonicSolidPos;
             platonicSolidPos.x = (things[things_current][0] + 0.5) * TEXTURE_W;
             platonicSolidPos.y = (things[things_current][1] + 0.5) * TEXTURE_W;
