@@ -314,7 +314,7 @@ class MazeGenerator : EventHandler
         }
 
 
-        int platonicSolidsNum = random(1, PLATONIC_SOLIDS_MAX_NUM);
+        int platonicSolidsNum = random(0, PLATONIC_SOLIDS_MAX_NUM/2) * 2;
         for (int i = 0; i < PLATONIC_SOLIDS_MAX_NUM; i++)
         {
             if (i >= platonicSolidsNum) continue;
