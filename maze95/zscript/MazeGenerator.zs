@@ -18,10 +18,10 @@ class MazeGenerator : EventHandler
     const OPENGL_WALLS_NUM = 3;
     const OPENGL_LOGOS_NUM = 2;
     const PLATONIC_SOLIDS_MAX_NUM = 6;
-    const MISSING_SHADERS_WARNINGS_NUM = 8;
-    const THINGS_N = 1 /*player*/ + 1 /*smiley*/ + OPENGL_WALLS_NUM + OPENGL_LOGOS_NUM
-            + PLATONIC_SOLIDS_MAX_NUM + MISSING_SHADERS_WARNINGS_NUM;
+    const THINGS_N = 1 /*player*/ + 1 /*smiley*/
+         + OPENGL_WALLS_NUM + OPENGL_LOGOS_NUM + PLATONIC_SOLIDS_MAX_NUM;
 
+    const MISSING_SHADERS_WARNINGS_NUM = 10;
 
     Maze95Player player;
     Array<Actor> actorsToRemove;
@@ -232,9 +232,13 @@ class MazeGenerator : EventHandler
             }
         }
 
-        // for (int i = 0; i < THINGS_N; i++) {
-        //     console.printf("(%d, %d)", things[i][0], things[i][1]);
-        // }
+        int missingShadersWarnings[MISSING_SHADERS_WARNINGS_NUM][2];
+        for (int i = 0; i < MISSING_SHADERS_WARNINGS_NUM; i++) {
+            x = random(0, MAZE_W - 1);
+            y = random(0, MAZE_W - 1);
+            missingShadersWarnings[i][0] = x;
+            missingShadersWarnings[i][1] = y;
+        }
 
         // fill things
 
@@ -333,10 +337,9 @@ class MazeGenerator : EventHandler
         for (int i = 0; i < MISSING_SHADERS_WARNINGS_NUM; i++)
         {
             Vector3 missingShadersWarningPos;
-            missingShadersWarningPos.x = (things[things_current][0] + 0.5) * TEXTURE_W;
-            missingShadersWarningPos.y = (things[things_current][1] + 0.5) * TEXTURE_W;
+            missingShadersWarningPos.x = (missingShadersWarnings[i][0] + 0.5) * TEXTURE_W;
+            missingShadersWarningPos.y = (missingShadersWarnings[i][1] + 0.5) * TEXTURE_W;
             missingShadersWarningPos.z = 0.5 * TEXTURE_W;
-            things_current++;
             a = Actor.Spawn("MissingShadersWarning", missingShadersWarningPos);
             actorsToRemove.push(a);
         }
