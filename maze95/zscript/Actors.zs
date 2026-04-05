@@ -79,6 +79,7 @@ class StartMarker : Actor
 
 class PlatonicSolid : Actor
 {
+    const PITCH_STEP = 0.03;
     Default
     {
         +NOGRAVITY;
@@ -127,6 +128,12 @@ class PlatonicSolid : Actor
         } else if (modelIndex == 4) {
             SetState(ResolveState("icosahedron"));
         }
+    }
+
+    override void Tick()
+    {
+        A_SetPitch(pitch+PITCH_STEP, SPF_INTERPOLATE);
+        super.Tick();
     }
 }
 

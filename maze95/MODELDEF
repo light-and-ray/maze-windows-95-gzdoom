@@ -4,6 +4,7 @@ Model PlatonicSolid
     Skin 0 "gray"
     Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
     ROTATING
+    USEACTORPITCH
     FrameIndex PLAT A 0 0
 }
 
@@ -13,6 +14,7 @@ Model PlatonicSolid
     Skin 0 "gray"
     Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
     ROTATING
+    USEACTORPITCH
     FrameIndex PLAT B 0 0
 }
 
@@ -22,6 +24,7 @@ Model PlatonicSolid
     Skin 0 "gray"
     Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
     ROTATING
+    USEACTORPITCH
     FrameIndex PLAT C 0 0
 }
 
@@ -31,5 +34,6 @@ Model PlatonicSolid
     Skin 0 "gray"
     Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
     ROTATING
+    USEACTORPITCH
     FrameIndex PLAT D 0 0
 }
