@@ -249,7 +249,7 @@ class MazeGenerator : EventHandler
         playerPos.y = (playerCellY + 0.5) * TEXTURE_W;
         playerPos.z = 0;
         things_current++;
-        player.setOrigin(playerPos, true);
+        player.setOrigin(playerPos, false);
         double playerAngle;
         for (int i = 0; i < 4; i++) {
             if (cells[playerCellY][playerCellX][i] != 0) {
@@ -282,8 +282,10 @@ class MazeGenerator : EventHandler
         // ratPos.y = (things[things_current][1] + 0.5) * TEXTURE_W;
         ratPos.z = 0;
         things_current++;
-        a = Actor.Spawn("Rat", startMarkerPos);
-        a.A_SetAngle(playerAngle);
+        a = Actor.Spawn("Rat", ratPos);
+        Rat ratActor = Rat(a);
+        ratActor.A_SetAngle(playerAngle);
+        ratActor.turnsAlwaysRight = (random(0, 1) == 1);
         actorsToRemove.push(a);
 
         TextureId openglWallTexture = TexMan.CheckForTexture("openglwall", TexMan.Type_Any);

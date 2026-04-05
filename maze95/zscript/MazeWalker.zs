@@ -1,6 +1,6 @@
 enum WalkerState_t
 {
-    AIMING = 0,
+    THINKING = 0,
     WALKING = 1,
     NOTHING = 2,
 }
@@ -53,48 +53,66 @@ class MazeWalker : Actor
         }
     }
 
+    bool turnsAlwaysRight;
     Array<double> intermediateStepsX;
     Array<double> intermediateStepsY;
     int currentStep;
     WalkerState_t walkerState;
 
+    double walkAngle;
+
+    override void PostBeginPlay()
+    {
+        super.PostBeginPlay();
+        self.walkAngle = self.angle;
+    }
+
     override void Tick()
     {
-        if (self.walkerState == AIMING) {
-            self.aimingTick();
+        // super.Tick();
+        if (self.walkerState == THINKING) {
+            self.thinkingTick();
         } else if (self.walkerState == WALKING) {
             self.walkTick();
         }
     }
 
-    void aimingTick()
+    void thinkingTick()
     {
-        FLineTraceData traceData;
-        self.LineTrace(self.angle, 10000, 0, TRF_THRUACTORS, 0, 0, 0, traceData);
-        Vector2 A = (self.pos.x, self.pos.y);
-        Vector2 B = (traceData.HitLocation.x, traceData.HitLocation.y);
-        Vector2 dirToA = A - B;
-        double dist = dirToA.Length();
-        if (dist <= 80)
-        {
-            console.printf("Needs turn");
-            self.walkerState = NOTHING;
-            return;
+        double turns[4];
+        turns[0] = (self.turnsAlwaysRight ? -90 : 90);
+        turns[1] = 0;
+        turns[2] = (self.turnsAlwaysRight ? 90 : -90);
+        turns[3] = 180;
+        double CELL_STEP = 128.0;
 
-        }
-        else
+        for (int i = 0; i < 4; i++)
         {
-            B += dirToA.Unit() * 64.0;
+            FLineTraceData traceData;
+            self.LineTrace(self.walkAngle + turns[i], 10000, 0, TRF_THRUACTORS, 64, 0, 0, traceData);
+            Vector2 A = (self.pos.x, self.pos.y);
+            Vector2 B = (traceData.HitLocation.x, traceData.HitLocation.y);
+            Vector2 dirAB = B - A;
+            double dist = dirAB.Length();
+            if (dist <= CELL_STEP)
+            {
+                continue;
+            }
+            else
+            {
+                B = A + dirAB.Unit() * CELL_STEP;
+            }
+            self.walkAngle += turns[i];
+            self.intermediateStepsX.clear();
+            self.intermediateStepsY.clear();
+            double STEP = 5;
+            self.getLineMoveIntermediateSteps(intermediateStepsX, A.x, A.y, B.x, B.y, STEP, true);
+            self.getLineMoveIntermediateSteps(intermediateStepsY, A.x, A.y, B.x, B.y, STEP, false);
+            self.currentStep = 0;
+            self.walkerState = WALKING;
+            self.walkTick();
+            break;
         }
-
-        self.intermediateStepsX.clear();
-        self.intermediateStepsY.clear();
-        double STEP = 5;
-        self.getLineMoveIntermediateSteps(intermediateStepsX, A.x, A.y, B.x, B.y, STEP, true);
-        self.getLineMoveIntermediateSteps(intermediateStepsY, A.x, A.y, B.x, B.y, STEP, false);
-        self.currentStep = 0;
-        self.walkerState = WALKING;
-        self.walkTick();
     }
 
     void walkTick()
@@ -105,8 +123,7 @@ class MazeWalker : Actor
         self.currentStep += 1;
         if (self.currentStep >= self.intermediateStepsX.size())
         {
-            self.walkerState = NOTHING;
-            console.printf("Needs turn");
+            self.walkerState = THINKING;
         }
     }
 }
