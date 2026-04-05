@@ -69,7 +69,7 @@ class MazeWalker : Actor
 
     override void Tick()
     {
-        // super.Tick();
+        super.Tick();
         if (self.walkerState == THINKING) {
             self.thinkingTick();
         } else if (self.walkerState == WALKING) {
