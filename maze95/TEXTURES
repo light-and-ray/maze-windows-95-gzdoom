@@ -55,3 +55,14 @@ sprite ADVAA0, 234, 169
     }
 }
 
+sprite RATAA0, 256, 123
+{
+    XScale 4
+    YScale 4
+    Offset 128, 123
+    Patch "patches/rat.png", 0, 0
+    {
+        Style CopyNewAlpha
+    }
+}
+

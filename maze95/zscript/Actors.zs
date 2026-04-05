@@ -91,16 +91,16 @@ class PlatonicSolid : Actor
             TNT1 A 0 NoDelay setRandomModel();
             loop;
         tetrahedron:
-            PLAT A 10;
+            PLAT A -1;
             loop;
         octahedron:
-            PLAT B 10;
+            PLAT B -1;
             loop;
         dodecahedron:
-            PLAT C 10;
+            PLAT C -1;
             loop;
         icosahedron:
-            PLAT D 10;
+            PLAT D -1;
             loop;
     }
 
@@ -140,7 +140,18 @@ class MissingShadersWarning : Actor
     States
     {
         Spawn:
-            ADVA A 10;
+            ADVA A -1;
+            loop;
+    }
+}
+
+
+class Rat : MazeWalker
+{
+    States
+    {
+        Spawn:
+            RATA A -1;
             loop;
     }
 }

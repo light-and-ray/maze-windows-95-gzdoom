@@ -18,7 +18,7 @@ class MazeGenerator : EventHandler
     const OPENGL_WALLS_NUM = 3;
     const OPENGL_LOGOS_NUM = 2;
     const PLATONIC_SOLIDS_MAX_NUM = 6;
-    const THINGS_N = 1 /*player*/ + 1 /*smiley*/
+    const THINGS_N = 1 /*player*/ + 1 /*smiley*/ + 1 /*rat*/
          + OPENGL_WALLS_NUM + OPENGL_LOGOS_NUM + PLATONIC_SOLIDS_MAX_NUM;
 
     const MISSING_SHADERS_WARNINGS_NUM = 10;
@@ -274,6 +274,14 @@ class MazeGenerator : EventHandler
         smileyPos.z = 0.5 * TEXTURE_W;
         things_current++;
         a = Actor.Spawn("Smiley", smileyPos);
+
+        actorsToRemove.push(a);
+        Vector3 ratPos;
+        ratPos.x = (things[things_current][0] + 0.5) * TEXTURE_W;
+        ratPos.y = (things[things_current][1] + 0.5) * TEXTURE_W;
+        ratPos.z = 0.5 * TEXTURE_W;
+        things_current++;
+        a = Actor.Spawn("Rat", ratPos);
         actorsToRemove.push(a);
 
         TextureId openglWallTexture = TexMan.CheckForTexture("openglwall", TexMan.Type_Any);
