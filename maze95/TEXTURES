@@ -35,7 +35,6 @@ sprite STRTA0, 509, 128
     }
 }
 
-
 texture openglwall, 256, 256
 {
     XScale 2.0
@@ -59,7 +58,7 @@ sprite RATAA0, 256, 123
 {
     XScale 4
     YScale 4
-    Offset 128, 123
+    Offset 128, -123
     Patch "patches/rat.png", 0, 0
     {
         Style CopyNewAlpha

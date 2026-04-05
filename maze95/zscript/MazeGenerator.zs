@@ -277,11 +277,13 @@ class MazeGenerator : EventHandler
 
         actorsToRemove.push(a);
         Vector3 ratPos;
-        ratPos.x = (things[things_current][0] + 0.5) * TEXTURE_W;
-        ratPos.y = (things[things_current][1] + 0.5) * TEXTURE_W;
-        ratPos.z = 0.5 * TEXTURE_W;
+        ratPos = playerPos;
+        // ratPos.x = (things[things_current][0] + 0.5) * TEXTURE_W;
+        // ratPos.y = (things[things_current][1] + 0.5) * TEXTURE_W;
+        ratPos.z = 0;
         things_current++;
-        a = Actor.Spawn("Rat", ratPos);
+        a = Actor.Spawn("Rat", startMarkerPos);
+        a.A_SetAngle(playerAngle);
         actorsToRemove.push(a);
 
         TextureId openglWallTexture = TexMan.CheckForTexture("openglwall", TexMan.Type_Any);
