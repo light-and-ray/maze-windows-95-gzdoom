@@ -44,10 +44,10 @@ episode maze95
    name = "Maze Windows 95"
 }
 
-skill VeryEasy
+skill Relaxed
 {
-    Name = "Very Easy"
-	mustConfirm = "Walls are 5 times smaller"
+    Name = "Relaxed"
+	mustConfirm = "Walls are very short, No upside down"
 }
 
 skill Easy
@@ -65,5 +65,5 @@ skill Normal
 skill Hard
 {
 	Name = "Hard"
-	mustConfirm = "Broken \"turn always left\"/\"turn always right\" rule"
+	mustConfirm = "Broken \"turn always left\" / \"turn always right\" rule"
 }
