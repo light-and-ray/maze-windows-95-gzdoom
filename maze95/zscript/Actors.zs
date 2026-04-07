@@ -28,7 +28,13 @@ class Smiley : Actor
 
     override bool CanCollideWith(Actor other, bool passive)
     {
-        if (noPrompt || (level.time - lastPromptTime) <= PROMPT_SECS*35*2) {
+        if (other is "AutoWalkingCamera")
+        {
+            MazeGenerator generator = MazeGenerator(EventHandler.Find("MazeGenerator"));
+            generator.restart();
+            return false;
+        }
+        if (noPrompt || (level.time - lastPromptTime) <= PROMPT_SECS*35*2){
             return false;
         }
         if (other is "Maze95Player")
@@ -160,5 +166,15 @@ class Rat : MazeWalker
         Spawn:
             RATA A -1;
             loop;
+    }
+}
+
+
+class AutoWalkingCamera : MazeWalker
+{
+    Default
+    {
+        Height 64;
+        CameraHeight 64;
     }
 }

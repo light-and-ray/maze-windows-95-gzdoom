@@ -38,7 +38,7 @@ class MazeGenerator : EventHandler
 
     void restart()
     {
-        if (completedLevels > 0) {
+        if (completedLevels > 0 && Level.levelName != "TITLEMAP") {
             player.A_Print(String.format("Completed levels streak: %d", completedLevels), 2.5, "CONFONT");
         }
         completedLevels++;
@@ -277,16 +277,25 @@ class MazeGenerator : EventHandler
 
         actorsToRemove.push(a);
         Vector3 ratPos;
-        ratPos = playerPos;
-        // ratPos.x = (things[things_current][0] + 0.5) * TEXTURE_W;
-        // ratPos.y = (things[things_current][1] + 0.5) * TEXTURE_W;
+        ratPos.x = (things[things_current][0] + 0.5) * TEXTURE_W;
+        ratPos.y = (things[things_current][1] + 0.5) * TEXTURE_W;
         ratPos.z = 0;
         things_current++;
         a = Actor.Spawn("Rat", ratPos);
         Rat ratActor = Rat(a);
-        ratActor.A_SetAngle(playerAngle);
         ratActor.turnsAlwaysRight = (random(0, 1) == 1);
         actorsToRemove.push(a);
+
+        if (Level.levelName == "TITLEMAP")
+        {
+            Actor a;
+            a = Actor.Spawn("AutoWalkingCamera", playerPos);
+            actorsToRemove.push(a);
+            MazeWalker playerCamera = MazeWalker(a);
+            playerCamera.A_SetAngle(playerAngle);
+            playerCamera.turnsAlwaysRight = !ratActor.turnsAlwaysRight;
+            player.SetCamera(playerCamera);
+        }
 
         TextureId openglWallTexture = TexMan.CheckForTexture("openglwall", TexMan.Type_Any);
         for (int i = 0; i < OPENGL_WALLS_NUM; i++)
