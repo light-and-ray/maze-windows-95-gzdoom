@@ -166,6 +166,8 @@ class MazeGenerator : EventHandler
         TextureId wallTexture = TexMan.CheckForTexture("wall", TexMan.Type_Any);
         line.sidedef[Line.front].SetTexture(Side.mid, wallTexture);
         line.sidedef[Line.back].SetTexture(Side.mid, wallTexture);
+        // line.sidedef[Line.front].SetTextureYScale(Side.mid, 5);
+        // line.sidedef[Line.back].SetTextureYScale(Side.mid, 5);
     }
 
     void makeLineInvisible(int lineIdx)

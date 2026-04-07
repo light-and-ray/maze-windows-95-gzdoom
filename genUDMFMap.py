@@ -41,6 +41,7 @@ def save(lines: list[list[Line]], box: list[Line]):
         udmfMap.linedefs[-1].arg0 = line.cellX
         udmfMap.linedefs[-1].arg1 = line.cellY
         udmfMap.linedefs[-1].arg2 = line.cellSide
+        udmfMap.linedefs[-1].dontpegbottom = True
         sideIdx += 2
     sideIdx -= 1
     for _ in range(len(udmfMap.sidedefs), sideIdx+1):
