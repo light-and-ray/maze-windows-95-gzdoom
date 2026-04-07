@@ -1,3 +1,24 @@
+GameInfo
+{
+	TitlePage = "graphics/titlepic.png"
+	CursorPic = "graphics/m_cursor.png"
+	PauseSign = "graphics/m_pause.png"
+	BorderFlat = "graphics/border_flat.png"
+	MenuBackButton = "graphics/m_back.png"
+	MenuFontColor_Title = "White"
+	MenuFontColor_Label = "Default"
+	MenuFontColor_Value = "Gray"
+	MenuFontColor_Action = "Gray"
+	MenuFontColor_Header = "White"
+	MenuFontColor_Highlight = "White"
+	MenuFontColor_Selection = "Gray"
+	/* FullscreenAutoAspect = 3 */
+	DimColor = "0b 0b 0b"
+	DimAmount = 0.8
+    PlayerClasses = "Maze95Player"
+	/* StatusbarClass = "MyStandaloneGameHUD" */
+}
+
 
 adddefaultmap
 {
@@ -24,11 +45,6 @@ episode maze95
 {
    name = "Maze Windows 95"
    NoSkillMenu
-}
-
-GameInfo
-{
-    PlayerClasses = "Maze95Player"
 }
 
 skill hellish
