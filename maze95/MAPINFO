@@ -42,10 +42,28 @@ clearepisodes
 episode maze95
 {
    name = "Maze Windows 95"
-   NoSkillMenu
 }
 
-skill hellish
+skill VeryEasy
 {
-    Name = "Hellish"
+    Name = "Very Easy"
+	mustConfirm = "Walls are 5 times smaller"
+}
+
+skill Easy
+{
+	Name = "Easy"
+	mustConfirm = "No upside down"
+}
+
+skill Normal
+{
+	Name = "Normal"
+	DefaultSkill
+}
+
+skill Hard
+{
+	Name = "Hard"
+	mustConfirm = "Broken \"turn always left\"/\"turn always right\" rule"
 }

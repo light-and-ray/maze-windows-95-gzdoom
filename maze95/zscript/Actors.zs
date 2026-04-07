@@ -115,6 +115,9 @@ class PlatonicSolid : Actor
 
     override bool CanCollideWith(Actor other, bool passive)
     {
+        if (Skill <= 1) {
+            return false;
+        }
         if (other is "Maze95Player")
         {
             Maze95Player player = Maze95Player(other);
