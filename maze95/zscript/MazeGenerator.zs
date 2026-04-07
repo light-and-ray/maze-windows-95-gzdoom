@@ -22,6 +22,7 @@ class MazeGenerator : EventHandler
          + OPENGL_WALLS_NUM + OPENGL_LOGOS_NUM + PLATONIC_SOLIDS_MAX_NUM;
 
     const MISSING_SHADERS_WARNINGS_NUM = 10;
+    const TURNING_RULE_BREAKERS_NUM = 4;
 
     Maze95Player player;
     Array<Actor> actorsToRemove;
@@ -46,6 +47,9 @@ class MazeGenerator : EventHandler
         generateMaze();
         applyCellsOnLevel();
         fillThings();
+        if (Skill >= 3) {
+            fillTurningRuleBreakers();
+        }
         self.player.setSpawnState();
     }
 
@@ -372,5 +376,71 @@ class MazeGenerator : EventHandler
 
     }
 
+
+    void fillTurningRuleBreakers()
+    {
+        int breakers[TURNING_RULE_BREAKERS_NUM][2];
+        int near_threshold = 3;
+
+        int x, y, i, j, count = 0;
+        bool unique;
+
+        while (count < TURNING_RULE_BREAKERS_NUM) {
+            x = random(1, MAZE_W - 2);
+            y = random(1, MAZE_W - 2);
+
+            unique = true;
+            for (i = 0; i < count; i++) {
+                if (abs(x - breakers[i][0]) <= near_threshold && abs(y - breakers[i][1]) <= near_threshold) {
+                    unique = false;
+                    break;
+                }
+            }
+
+            if (unique) {
+                breakers[count][0] = x;
+                breakers[count][1] = y;
+                count++;
+            }
+        }
+
+        TextureId openglWallTexture = TexMan.CheckForTexture("openglwall", TexMan.Type_Any);
+        for (int i = 0; i < TURNING_RULE_BREAKERS_NUM; i++)
+        {
+            int x = breakers[i][0];
+            int y = breakers[i][1];
+            int cellSide;
+            while (true) {
+                cellSide = random(0, 3);
+                if (cells[y][x][cellSide] == 0) break;
+            }
+            int lineNum;
+            lineNum = cellsToLinedefs[y][x][cellSide];
+            makeLineInvisible(lineNum);
+
+            if (cellSide == SIDE_TOP && (y+1) < MAZE_W) {
+                lineNum = cellsToLinedefs[y+1][x][SIDE_BOTTOM];
+            }
+            if (cellSide == SIDE_BOTTOM && (y-1) >= 0) {
+                lineNum = cellsToLinedefs[y-1][x][SIDE_TOP];
+            }
+            if (cellSide == SIDE_RIGHT && (x+1) < MAZE_W) {
+                lineNum = cellsToLinedefs[y][x+1][SIDE_LEFT];
+            }
+            if (cellSide == SIDE_LEFT && (x-1) >= 0) {
+                lineNum = cellsToLinedefs[y][x-1][SIDE_RIGHT];
+            }
+            makeLineInvisible(lineNum);
+
+            // Vector3 pos;
+            // pos.x = (x + 0.5) * TEXTURE_W;
+            // pos.y = (y + 0.5) * TEXTURE_W;
+            // pos.z = 0.5 * TEXTURE_W;
+            // Actor a;
+            // a = Actor.Spawn("StartMarker", pos);
+            // actorsToRemove.push(a);
+        }
+
+    }
 
 }
