@@ -65,3 +65,12 @@ sprite RATAA0, 256, 123
     }
 }
 
+texture BRDR_B, 128, 128
+{
+    Patch "textures/wall.png", 0, 0
+}
+
+texture F_SKY1, 64, 64
+{
+    Patch "textures/back.png", 0, 0
+}

@@ -31,4 +31,7 @@ GameInfo
     PlayerClasses = "Maze95Player"
 }
 
-
+skill hellish
+{
+    Name = "Hellish"
+}

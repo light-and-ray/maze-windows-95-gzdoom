@@ -1,2 +1,3 @@
 #!/bin/bash
-gzdoom -iwad DOOM.WAD -file maze95
+./exportIPK3.sh
+gzdoom -iwad maze95.ipk3
