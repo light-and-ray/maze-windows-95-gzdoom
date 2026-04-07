@@ -70,6 +70,11 @@ def save(lines: list[list[Line]], box: list[Line]):
     os.makedirs(os.path.dirname(wadPath), exist_ok=True)
     wad.to_file(wadPath)
 
+    wad = omg.WAD()
+    wad.udmfmaps["TITLEMAP"] = udmfMap.to_lumps()
+    titleMapWadPath = "maze95/maps/TITLEMAP.wad"
+    wad.to_file(titleMapWadPath)
+
 
 def genUDMFMap():
     lines : list[list[Line]] = []

@@ -1,2 +1,2 @@
 #!/bin/bash -ex
-env/bin/python genUDMFMap.py
+venv/bin/python genUDMFMap.py

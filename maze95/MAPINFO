@@ -12,6 +12,12 @@ map maze95 lookup "maze95"
     EventHandlers = "MazeGenerator"
 }
 
+map TITLEMAP lookup "TITLEMAP"
+{
+    levelnum = 1
+    EventHandlers = "MazeGenerator"
+}
+
 clearepisodes
 
 episode maze95
