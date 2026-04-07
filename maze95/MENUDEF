@@ -17,7 +17,7 @@ ListMenu "MainMenu"
 {
 	LineSpacing 16
 	Position 97, 72
-	StaticText 74, 16, "Maze 95 UZDX"
+	StaticPatch 64, 16, "logo"
 	TextItem "$MNU_NEWGAME", "n", "PlayerclassMenu"
 	TextItem "$MNU_OPTIONS", "o", "OptionsMenu"
 	TextItem "$MNU_LOADGAME", "l", "LoadGameMenu"
