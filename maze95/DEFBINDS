@@ -1,3 +1,4 @@
 bind f "toggle sv_freelook"
 bind leftArrow "+left"
 bind rightArrow "+right"
+bind ctrl "+crouch"

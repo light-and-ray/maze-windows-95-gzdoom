@@ -1,6 +1,6 @@
 GameInfo
 {
-	TitlePage = "graphics/titlepic.png"
+	TitlePage = "graphics/TITLEPIC.png"
 	CursorPic = "graphics/m_cursor.png"
 	PauseSign = "graphics/m_pause.png"
 	BorderFlat = "graphics/border_flat.png"
