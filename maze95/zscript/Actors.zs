@@ -21,8 +21,7 @@ class Smiley : Actor
 
     override bool Used(Actor user)
     {
-        MazeGenerator generator = MazeGenerator(EventHandler.Find("MazeGenerator"));
-        generator.restart();
+        self.restart();
         return true;
     }
 
@@ -30,8 +29,7 @@ class Smiley : Actor
     {
         if (other is "AutoWalkingCamera")
         {
-            MazeGenerator generator = MazeGenerator(EventHandler.Find("MazeGenerator"));
-            generator.restart();
+            self.restart();
             return false;
         }
         if (noPrompt || (level.time - lastPromptTime) <= PROMPT_SECS*35*2){
@@ -50,6 +48,11 @@ class Smiley : Actor
         return false;
     }
 
+    void restart()
+    {
+        MazeGenerator generator = MazeGenerator(EventHandler.Find("MazeGenerator"));
+        generator.stretcher.startStretchingDown();
+    }
 }
 
 

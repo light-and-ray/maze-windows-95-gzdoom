@@ -28,11 +28,14 @@ class MazeGenerator : EventHandler
     Array<Actor> actorsToRemove;
     int completedLevels;
 
+    Stretcher_t stretcher;
+
 
     override void PlayerEntered (PlayerEvent e)
     {
         player = Maze95Player(players[e.PlayerNumber].mo);
         initCellsToLinedefs();
+        stretcher = new('Stretcher_t');
         restart();
     }
 
@@ -51,6 +54,7 @@ class MazeGenerator : EventHandler
             fillTurningRuleBreakers();
         }
         self.player.setSpawnState();
+        stretcher.startStretchingUp();
     }
 
     void removeAllThings()

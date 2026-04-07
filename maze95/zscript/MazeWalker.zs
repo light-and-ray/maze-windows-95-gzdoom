@@ -2,7 +2,7 @@ enum WalkerState_t
 {
     THINKING = 0,
     WALKING = 1,
-    NOTHING = 2,
+    WALKER_NOTHING = 2,
 }
 
 class MazeWalker : Actor
