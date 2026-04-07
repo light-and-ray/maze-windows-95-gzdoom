@@ -37,3 +37,14 @@ Model PlatonicSolid
     USEACTORPITCH
     FrameIndex PLAT D 0 0
 }
+
+Model PlatonicSolid
+{
+    Model 0 "models/tetrahedron.obj"
+    Skin 0 "gray"
+    Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
+    PitchOffset 54.74
+    ROTATING
+    USEACTORPITCH
+    FrameIndex PLAT E 0 0
+}

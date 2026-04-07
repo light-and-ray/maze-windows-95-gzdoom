@@ -108,6 +108,9 @@ class PlatonicSolid : Actor
         icosahedron:
             PLAT D -1;
             loop;
+        tetrahedron2:
+            PLAT E -1;
+            loop;
     }
 
     override bool CanCollideWith(Actor other, bool passive)
@@ -129,7 +132,7 @@ class PlatonicSolid : Actor
 
     void setRandomModel()
     {
-        int modelIndex = random(1, 4);
+        int modelIndex = random(1, 5);
         if (modelIndex == 1) {
             SetState(ResolveState("tetrahedron"));
         } else if (modelIndex == 2) {
@@ -138,6 +141,8 @@ class PlatonicSolid : Actor
             SetState(ResolveState("dodecahedron"));
         } else if (modelIndex == 4) {
             SetState(ResolveState("icosahedron"));
+        } else if (modelIndex == 5) {
+            SetState(ResolveState("tetrahedron2"));
         }
     }
 }
