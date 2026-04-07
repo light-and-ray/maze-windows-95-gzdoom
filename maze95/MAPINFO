@@ -12,11 +12,9 @@ GameInfo
 	MenuFontColor_Header = "White"
 	MenuFontColor_Highlight = "White"
 	MenuFontColor_Selection = "Gray"
-	/* FullscreenAutoAspect = 3 */
-	DimColor = "0b 0b 0b"
-	DimAmount = 0.2
+	DimColor = "f0 f0 f0"
+	DimAmount = 0.1
     PlayerClasses = "Maze95Player"
-	/* StatusbarClass = "MyStandaloneGameHUD" */
 }
 
 
