@@ -14,7 +14,7 @@ GameInfo
 	MenuFontColor_Selection = "Gray"
 	/* FullscreenAutoAspect = 3 */
 	DimColor = "0b 0b 0b"
-	DimAmount = 0.8
+	DimAmount = 0.2
     PlayerClasses = "Maze95Player"
 	/* StatusbarClass = "MyStandaloneGameHUD" */
 }
