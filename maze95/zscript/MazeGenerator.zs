@@ -295,6 +295,7 @@ class MazeGenerator : EventHandler
             playerCamera.A_SetAngle(playerAngle);
             playerCamera.turnsAlwaysRight = !ratActor.turnsAlwaysRight;
             player.SetCamera(playerCamera);
+            player.setOrigin((100000, 100000, 0), false);
         }
 
         TextureId openglWallTexture = TexMan.CheckForTexture("openglwall", TexMan.Type_Any);

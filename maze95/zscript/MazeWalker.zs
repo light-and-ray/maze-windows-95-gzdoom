@@ -60,6 +60,10 @@ class MazeWalker : Actor
     WalkerState_t walkerState;
 
     double walkAngle;
+    const ANGLE_STEP = 4;
+
+    bool upSideDown;
+    bool _oldUpSideDown;
 
     override void PostBeginPlay()
     {
@@ -70,10 +74,21 @@ class MazeWalker : Actor
     override void Tick()
     {
         super.Tick();
+
         if (self.walkerState == THINKING) {
             self.thinkingTick();
         } else if (self.walkerState == WALKING) {
             self.walkTick();
+        }
+
+        if (self.angle > self.walkAngle)
+        {
+            double newAngle = max(self.angle - self.ANGLE_STEP, self.walkAngle);
+            self.A_SetAngle(newAngle, SPF_INTERPOLATE);
+        } else if (self.angle < self.walkAngle)
+        {
+            double newAngle = min(self.angle + self.ANGLE_STEP, self.walkAngle);
+            self.A_SetAngle(newAngle, SPF_INTERPOLATE);
         }
     }
 
@@ -83,7 +98,7 @@ class MazeWalker : Actor
         turns[0] = (self.turnsAlwaysRight ? -90 : 90);
         turns[1] = 0;
         turns[2] = (self.turnsAlwaysRight ? 90 : -90);
-        turns[3] = 180;
+        turns[3] = (self.turnsAlwaysRight ? -180 : 180);;
         double CELL_STEP = 128.0;
 
         for (int i = 0; i < 4; i++)
@@ -120,6 +135,7 @@ class MazeWalker : Actor
         double x = self.intermediateStepsX[self.currentStep];
         double y = self.intermediateStepsY[self.currentStep];
         self.setOrigin((x, y, self.pos.z), true);
+        self.TestMobjLocation();
         self.currentStep += 1;
         if (self.currentStep >= self.intermediateStepsX.size())
         {

@@ -119,6 +119,12 @@ class PlatonicSolid : Actor
             player.upSideDown = !player.upSideDown;
             self.destroy();
         }
+        if (other is "AutoWalkingCamera")
+        {
+            AutoWalkingCamera camera = AutoWalkingCamera(other);
+            camera.upSideDown = !camera.upSideDown;
+            self.destroy();
+        }
         return false;
     }
 
@@ -176,5 +182,6 @@ class AutoWalkingCamera : MazeWalker
     {
         Height 64;
         CameraHeight 64;
+        +SOLID;
     }
 }
