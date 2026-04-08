@@ -13,7 +13,7 @@ class Line:
 
 MAZE_W = 10
 TEXTURE_W = 128
-LIGHT_LEVEL = 300
+LIGHT_LEVEL = 250
 BOX_GAP = 1
 
 def save(lines: list[list[Line]], box: list[Line]):

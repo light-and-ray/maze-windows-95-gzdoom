@@ -4,6 +4,12 @@ HardwareShader PostProcess Scene
     enabled
 }
 
+HardwareShader PostProcess Scene
+{
+    shader "shaders/increase_saturation.fp" 350
+    enabled
+}
+
 material texture "gray"
 {
     shader "shaders/fake_contrast.fp"
