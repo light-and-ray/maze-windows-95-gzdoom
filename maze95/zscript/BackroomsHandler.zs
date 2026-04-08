@@ -1,3 +1,7 @@
+
+// this backrooms level was inspired by https://youtu.be/yebg1KiMGQA video
+// and is a recreation of it. Can't put it into readme credits because it's an easter egg
+
 class BackroomsActivator : Thinker
 {
     const CHECK_INTERVAL = 200;
