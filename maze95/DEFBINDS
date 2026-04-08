@@ -2,4 +2,6 @@ bind f "toggle sv_freelook"
 bind leftArrow "+left"
 bind rightArrow "+right"
 bind ctrl "+crouch"
+bind space "+jump"
+bind e "+use"
 unbind tab
