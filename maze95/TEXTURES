@@ -96,7 +96,7 @@ texture ERRR2, 1024, 1024
 
 texture ERRR3, 1024, 1024
 {
-    XScale 8
-    YScale 8
+    XScale 10
+    YScale 10
     Patch "patches/ERRR3.png", 0, 0
 }
