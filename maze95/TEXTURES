@@ -65,11 +65,6 @@ sprite RATAA0, 256, 123
     }
 }
 
-texture F_SKY1, 64, 64
-{
-    Patch "textures/black.png", 0, 0
-}
-
 graphic logo, 2329, 605
 {
     XScale 10.5

@@ -15,6 +15,7 @@ GameInfo
 	DimColor = "f0 f0 f0"
 	DimAmount = 0.1
     PlayerClasses = "Maze95Player"
+	StatusbarClass = "MyStandaloneGameHUD"
 }
 
 
