@@ -88,6 +88,6 @@ class Stretcher_t : Thinker
     void restart()
     {
         MazeGenerator generator = MazeGenerator(EventHandler.Find("MazeGenerator"));
-        generator.restart();
+        generator.nextLevel();
     }
 }

@@ -30,31 +30,37 @@ class MazeGenerator : EventHandler
 
     Stretcher_t stretcher;
 
+    bool backroomsMode;
 
-    override void PlayerEntered (PlayerEvent e)
+
+    override void PlayerEntered(PlayerEvent e)
     {
-        player = Maze95Player(players[e.PlayerNumber].mo);
-        initCellsToLinedefs();
-        stretcher = new('Stretcher_t');
-        restart();
+        self.player = Maze95Player(players[e.PlayerNumber].mo);
+        self.initCellsToLinedefs();
+        self.stretcher = new('Stretcher_t');
+        self.nextLevel();
     }
 
-
-    void restart()
+    void nextLevel()
     {
         if (completedLevels > 0 && Level.levelName != "TITLEMAP") {
             player.A_Print(String.format("Completed levels streak: %d", completedLevels), 2.5, "CONFONT");
         }
-        completedLevels++;
-        removeAllThings();
-        generateMaze();
-        applyCellsOnLevel();
-        fillThings();
+        self.completedLevels++;
+        self.restart();
+    }
+
+    void restart()
+    {
+        self.removeAllThings();
+        self.generateMaze();
+        self.applyCellsOnLevel();
+        self.fillThings();
         if (Skill >= 3) {
-            fillTurningRuleBreakers();
+            self.fillTurningRuleBreakers();
         }
         self.player.setSpawnState();
-        stretcher.startStretchingUp();
+        self.stretcher.startStretchingUp();
     }
 
     void removeAllThings()
@@ -170,7 +176,8 @@ class MazeGenerator : EventHandler
     {
         Line line = level.lines[lineIdx];
         line.flags |= Line.ML_BLOCKEVERYTHING;
-        TextureId wallTexture = TexMan.CheckForTexture("wall", TexMan.Type_Any);
+        string wallTextureName = !self.backroomsMode ? "wall" : "ERRR1";
+        TextureId wallTexture = TexMan.CheckForTexture(wallTextureName, TexMan.Type_Any);
         line.sidedef[Line.front].SetTexture(Side.mid, wallTexture);
         line.sidedef[Line.back].SetTexture(Side.mid, wallTexture);
         if (Skill <= 0)
@@ -187,6 +194,20 @@ class MazeGenerator : EventHandler
         TextureId noTexture = TexMan.CheckForTexture("-", TexMan.Type_Any);
         line.sidedef[Line.front].SetTexture(Side.mid, noTexture);
         line.sidedef[Line.back].SetTexture(Side.mid, noTexture);
+    }
+
+    void toggleBackrooms()
+    {
+        self.backroomsMode = !self.backroomsMode;
+        Sector sector = level.lines[5].sidedef[Line.front].sector;
+        string floorTextureName = !self.backroomsMode ? "floor" : "ERRR3";
+        TextureId floorTexture = TexMan.CheckForTexture(floorTextureName, TexMan.Type_Any);
+        sector.SetTexture(Sector.Floor, floorTexture);
+        string cellingTextureName = !self.backroomsMode ? "ceiling" : "ERRR2";
+        TextureId cellingTexture = TexMan.CheckForTexture(cellingTextureName, TexMan.Type_Any);
+        sector.SetTexture(Sector.Ceiling, cellingTexture);
+        string musicName = !self.backroomsMode ? "Nostalgic Soundscapes S01E02 _ Forgotten _ Windows 95 Retro Ambient-DrmpZtxr0kY.mp3" : "ERRR.mp3";
+        S_ChangeMusic(musicName);
     }
 
     void applyCellsOnLevel()

@@ -4,4 +4,5 @@ version 4.11
 #include "zscript/Maze95Player.zs"
 #include "zscript/Stretcher.zs"
 #include "zscript/MazeGenerator.zs"
+#include "zscript/BackroomsHandler.zs"
 #include "zscript/nashmove.zs"

@@ -28,7 +28,7 @@ adddefaultmap
 map maze95 lookup "maze95"
 {
     levelnum = 1
-    EventHandlers = "MazeGenerator"
+    EventHandlers = "MazeGenerator", "BackroomsHandler"
 }
 
 map TITLEMAP lookup "TITLEMAP"
