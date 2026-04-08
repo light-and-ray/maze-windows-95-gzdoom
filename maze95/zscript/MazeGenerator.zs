@@ -31,6 +31,7 @@ class MazeGenerator : EventHandler
     Stretcher_t stretcher;
 
     bool backroomsMode;
+    const AUTO_TOGGLE_BACKROOMS_TITLEMAP = 12;
 
 
     override void PlayerEntered(PlayerEvent e)
@@ -45,6 +46,13 @@ class MazeGenerator : EventHandler
     {
         if (completedLevels > 0 && Level.levelName != "TITLEMAP") {
             player.A_Print(String.format("Completed levels streak: %d", completedLevels), 2.5, "CONFONT");
+        }
+        int rem = self.completedLevels % self.AUTO_TOGGLE_BACKROOMS_TITLEMAP;
+        if (Level.levelName == "TITLEMAP"
+            && self.completedLevels >= self.AUTO_TOGGLE_BACKROOMS_TITLEMAP
+            && (rem == 0 || rem == 2))
+        {
+            self.toggleBackrooms();
         }
         self.completedLevels++;
         self.restart();
