@@ -56,11 +56,12 @@ class MazeWalker : Actor
     bool turnsAlwaysRight;
     Array<double> intermediateStepsX;
     Array<double> intermediateStepsY;
+    Array<double> intermediateStepsAngle;
     int currentStep;
     WalkerState_t walkerState;
 
     double walkAngle;
-    const ANGLE_STEP = 4;
+    const WALK_STEP = 5;
 
     bool upSideDown;
     bool _oldUpSideDown;
@@ -79,16 +80,6 @@ class MazeWalker : Actor
             self.thinkingTick();
         } else if (self.walkerState == WALKING) {
             self.walkTick();
-        }
-
-        if (self.angle > self.walkAngle)
-        {
-            double newAngle = max(self.angle - self.ANGLE_STEP, self.walkAngle);
-            self.A_SetAngle(newAngle, SPF_INTERPOLATE);
-        } else if (self.angle < self.walkAngle)
-        {
-            double newAngle = min(self.angle + self.ANGLE_STEP, self.walkAngle);
-            self.A_SetAngle(newAngle, SPF_INTERPOLATE);
         }
     }
 
@@ -120,9 +111,13 @@ class MazeWalker : Actor
             self.walkAngle += turns[i];
             self.intermediateStepsX.clear();
             self.intermediateStepsY.clear();
-            double STEP = 5;
-            self.getLineMoveIntermediateSteps(intermediateStepsX, A.x, A.y, B.x, B.y, STEP, true);
-            self.getLineMoveIntermediateSteps(intermediateStepsY, A.x, A.y, B.x, B.y, STEP, false);
+            self.intermediateStepsAngle.clear();
+            self.getLineMoveIntermediateSteps(intermediateStepsX, A.x, A.y, B.x, B.y, self.WALK_STEP, true);
+            self.getLineMoveIntermediateSteps(intermediateStepsY, A.x, A.y, B.x, B.y, self.WALK_STEP, false);
+            double angleStep = turns[i] / intermediateStepsX.size();
+            for (int i = 0; i < intermediateStepsX.size(); i++) {
+                self.intermediateStepsAngle.push(self.angle + angleStep * (i+1));
+            }
             self.currentStep = 0;
             self.walkerState = WALKING;
             self.walkTick();
@@ -136,6 +131,8 @@ class MazeWalker : Actor
         double y = self.intermediateStepsY[self.currentStep];
         self.setOrigin((x, y, self.pos.z), true);
         self.TestMobjLocation();
+        double newAngle = self.intermediateStepsAngle[self.currentStep];
+        self.A_SetAngle(newAngle, SPF_INTERPOLATE);
         self.currentStep += 1;
         if (self.currentStep >= self.intermediateStepsX.size())
         {

@@ -186,6 +186,7 @@ class AutoWalkingCamera : MazeWalker
     {
         Height 64;
         CameraHeight 64;
+        CameraFOV 115;
         +SOLID;
     }
 }
