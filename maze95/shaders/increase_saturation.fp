@@ -1,6 +1,6 @@
 void main()
 {
-    float saturationFactor = 1.20;
+    float saturationFactor = 1.15;
     vec4 src = texture(InputTexture, TexCoord);
     vec3 color = src.rgb;
     float luminance = dot(color, vec3(0.2126, 0.7152, 0.0722));
