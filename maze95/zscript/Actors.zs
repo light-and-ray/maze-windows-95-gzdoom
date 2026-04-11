@@ -102,6 +102,7 @@ class StartMarker : Maze3DActor
 
 class PlatonicSolid : Maze3DActor
 {
+    bool destroyMeAfterRotation;
     Default
     {
         +NOGRAVITY;
@@ -135,17 +136,20 @@ class PlatonicSolid : Maze3DActor
         if (Skill <= 1) {
             return false;
         }
+        if (self.destroyMeAfterRotation) {
+            return false;
+        }
         if (other is "Maze95Player")
         {
             Maze95Player player = Maze95Player(other);
             player.upSideDown = !player.upSideDown;
-            self.destroy();
+            self.destroyMeAfterRotation = true;
         }
         if (other is "AutoWalkingCamera")
         {
             AutoWalkingCamera camera = AutoWalkingCamera(other);
             camera.upSideDown = !camera.upSideDown;
-            self.destroy();
+            self.destroyMeAfterRotation = true;
         }
         return false;
     }
