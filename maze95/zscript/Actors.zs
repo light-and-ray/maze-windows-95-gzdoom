@@ -1,5 +1,9 @@
 
-class Smiley : Actor
+class Maze3DActor : Actor
+{    }
+
+
+class Smiley : Maze3DActor
 {
     const PROMPT_SECS = 2.5;
     int lastPromptTime;
@@ -56,7 +60,7 @@ class Smiley : Actor
 }
 
 
-class OpenGLLogo : Actor
+class OpenGLLogo : Maze3DActor
 {
     Default
     {
@@ -71,7 +75,7 @@ class OpenGLLogo : Actor
     }
 }
 
-class StartMarker : Actor
+class StartMarker : Maze3DActor
 {
     Default
     {
@@ -86,7 +90,7 @@ class StartMarker : Actor
 }
 
 
-class PlatonicSolid : Actor
+class PlatonicSolid : Maze3DActor
 {
     Default
     {
@@ -154,7 +158,7 @@ class PlatonicSolid : Actor
 }
 
 
-class MissingShadersWarning : Actor
+class MissingShadersWarning : Maze3DActor
 {
     Default
     {

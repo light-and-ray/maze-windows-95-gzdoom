@@ -5,7 +5,7 @@ enum WalkerState_t
     WALKER_NOTHING = 2,
 }
 
-class MazeWalker : Actor
+class MazeWalker : Maze3DActor
 {
     void getLineMoveIntermediateSteps(Array<double> points, double xA, double yA, double xB, double yB, double step, bool returnX)
     {

@@ -33,7 +33,7 @@ class Stretcher_t : Thinker
     void stretchingUpTick()
     {
         if (self.nextStretch >= self.MAX_STRETCH) {
-            self.state = STRETCHER_NOTHING;
+            self.afterStretchingUp();
         }
         self.applyNextStretch();
         self.nextStretch += self.STRETCH_STEP;
@@ -45,8 +45,7 @@ class Stretcher_t : Thinker
     void stretchingDownTick()
     {
         if (self.nextStretch <= self.MIN_STRETCH) {
-            self.state = STRETCHER_NOTHING;
-            self.restart();
+            self.afterStretchingDown();
         }
         self.applyNextStretch();
         self.nextStretch -= self.STRETCH_STEP;
@@ -73,21 +72,65 @@ class Stretcher_t : Thinker
         }
     }
 
+
     void startStretchingUp()
     {
+        self.hideThings();
         self.nextStretch = self.MIN_STRETCH;
         self.state = STRETCHING_UP;
     }
 
     void startStretchingDown()
     {
+        self.hideThings();
         self.nextStretch = self.MAX_STRETCH - self.STRETCH_STEP;
         self.state = STRETCHING_DOWN;
     }
+
+    void afterStretchingUp()
+    {
+        self.state = STRETCHER_NOTHING;
+        self.showThings();
+    }
+
+    void afterStretchingDown()
+    {
+        self.state = STRETCHER_NOTHING;
+        self.showThings();
+        self.restart();
+    }
+
 
     void restart()
     {
         MazeGenerator generator = MazeGenerator(EventHandler.Find("MazeGenerator"));
         generator.nextLevel();
     }
+
+
+    void hideThings()
+    {
+        MazeGenerator generator = MazeGenerator(EventHandler.Find("MazeGenerator"));
+        Maze3DActor actor;
+        ThinkerIterator iterator = ThinkerIterator.Create("Maze3DActor");
+        while (actor = Maze3DActor(iterator.next()))
+        {
+            if (actor && !generator.player.CheckSight(actor))
+            {
+                actor.bINVISIBLE = true;
+            }
+        }
+    }
+
+    void showThings()
+    {
+        MazeGenerator generator = MazeGenerator(EventHandler.Find("MazeGenerator"));
+        Maze3DActor actor;
+        ThinkerIterator iterator = ThinkerIterator.Create("Maze3DActor");
+        while (actor = Maze3DActor(iterator.next()))
+        {
+            actor.bINVISIBLE = false;
+        }
+    }
+
 }
