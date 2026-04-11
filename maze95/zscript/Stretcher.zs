@@ -6,6 +6,18 @@ enum StretcherState_t
 }
 
 
+class CellToLineActor : Maze3DActor
+{
+    Array<int> lines;
+    Default
+    {
+        Radius 4;
+        Height 128;
+        +NOGRAVITY;
+    }
+}
+
+
 class Stretcher_t : Thinker
 {
     StretcherState_t state;
@@ -13,6 +25,8 @@ class Stretcher_t : Thinker
     double MAX_STRETCH;
     const MIN_STRETCH = STRETCH_STEP;
     double nextStretch;
+    Array<int> linesToShow;
+    const HIDDEN_OFFSET = 30000;
 
     override void PostBeginPlay()
     {
@@ -110,26 +124,64 @@ class Stretcher_t : Thinker
 
     void hideThings()
     {
+        if (Skill == 0) return;
+        self.linesToShow.clear();
         MazeGenerator generator = MazeGenerator(EventHandler.Find("MazeGenerator"));
+        Actor camera = generator.player.player.camera;
         Maze3DActor actor;
         ThinkerIterator iterator = ThinkerIterator.Create("Maze3DActor");
         while (actor = Maze3DActor(iterator.next()))
         {
-            if (actor && !generator.player.CheckSight(actor))
+            if (actor)
             {
-                actor.bINVISIBLE = true;
+                if (!camera.CheckSight(actor)) {
+                        actor.bINVISIBLE = true;
+                } else {
+                    if (actor is "CellToLineActor") {
+                        CellToLineActor actor2 = CellToLineActor(actor);
+                        for (int i = 0; i < actor2.lines.size(); i++) {
+                            self.linesToShow.push(actor2.lines[i]);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int lineNum = 0; lineNum < Level.lines.size(); lineNum++)
+        {
+            if (self.linesToShow.find(lineNum) == self.linesToShow.size())
+            {
+                if (Level.lines[lineNum].sidedef[Line.front]) {
+                    Level.lines[lineNum].sidedef[Line.front].AddTextureYOffset(Side.mid, HIDDEN_OFFSET);
+                }
+                if (Level.lines[lineNum].sidedef[Line.back]) {
+                    Level.lines[lineNum].sidedef[Line.back].AddTextureYOffset(Side.mid, HIDDEN_OFFSET);
+                }
             }
         }
     }
 
     void showThings()
     {
-        MazeGenerator generator = MazeGenerator(EventHandler.Find("MazeGenerator"));
+        if (Skill == 0) return;
         Maze3DActor actor;
         ThinkerIterator iterator = ThinkerIterator.Create("Maze3DActor");
         while (actor = Maze3DActor(iterator.next()))
         {
             actor.bINVISIBLE = false;
+        }
+
+        for (int lineNum = 0; lineNum < Level.lines.size(); lineNum++)
+        {
+            if (self.linesToShow.find(lineNum) == self.linesToShow.size())
+            {
+                if (Level.lines[lineNum].sidedef[Line.front]) {
+                    Level.lines[lineNum].sidedef[Line.front].AddTextureYOffset(Side.mid, -HIDDEN_OFFSET);
+                }
+                if (Level.lines[lineNum].sidedef[Line.back]) {
+                    Level.lines[lineNum].sidedef[Line.back].AddTextureYOffset(Side.mid, -HIDDEN_OFFSET);
+                }
+            }
         }
     }
 

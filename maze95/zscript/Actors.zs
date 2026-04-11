@@ -8,6 +8,7 @@ class Smiley : Maze3DActor
     const PROMPT_SECS = 2.5;
     int lastPromptTime;
     bool noPrompt;
+    bool restarted;
 
     Default
     {
@@ -54,6 +55,8 @@ class Smiley : Maze3DActor
 
     void restart()
     {
+        if (self.restarted) return;
+        self.restarted = true;
         MazeGenerator generator = MazeGenerator(EventHandler.Find("MazeGenerator"));
         generator.stretcher.startStretchingDown();
     }
@@ -194,3 +197,4 @@ class AutoWalkingCamera : MazeWalker
         +SOLID;
     }
 }
+
