@@ -22,7 +22,8 @@ class Stretcher_t : Thinker
 {
     StretcherState_t state;
     const STRETCH_STEP = 0.02;
-    double MAX_STRETCH;
+    const MAX_STRETCH = 1.0;
+    double MAX_WALLS_STRETCH;
     const MIN_STRETCH = STRETCH_STEP;
     double nextStretch;
     Array<int> linesToShow;
@@ -31,7 +32,7 @@ class Stretcher_t : Thinker
     override void PostBeginPlay()
     {
         super.PostBeginPlay();
-        self.MAX_STRETCH = (Skill > 0 ? 1.0 : 0.2);
+        self.MAX_WALLS_STRETCH = (Skill > 0 ? 1.0 : 0.2);
     }
 
 
@@ -70,18 +71,21 @@ class Stretcher_t : Thinker
 
     void applyNextStretch()
     {
-        for (int lineNum = 0; lineNum < Level.lines.size(); lineNum += 1)
+        if (self.nextStretch <= self.MAX_WALLS_STRETCH)
         {
-            Line line = level.lines[lineNum];
-            Side front = line.sidedef[Line.front];
-            Side back = line.sidedef[Line.back];
-            if (front && front.GetTexture(Side.mid))
+            for (int lineNum = 0; lineNum < Level.lines.size(); lineNum += 1)
             {
-                front.SetTextureYScale(Side.mid, 1/self.nextStretch);
-            }
-            if (back && back.GetTexture(Side.mid))
-            {
-                back.SetTextureYScale(Side.mid, 1/self.nextStretch);
+                Line line = level.lines[lineNum];
+                Side front = line.sidedef[Line.front];
+                Side back = line.sidedef[Line.back];
+                if (front && front.GetTexture(Side.mid))
+                {
+                    front.SetTextureYScale(Side.mid, 1/self.nextStretch);
+                }
+                if (back && back.GetTexture(Side.mid))
+                {
+                    back.SetTextureYScale(Side.mid, 1/self.nextStretch);
+                }
             }
         }
         Maze3DActor actor;
