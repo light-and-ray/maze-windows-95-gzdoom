@@ -84,6 +84,13 @@ class Stretcher_t : Thinker
                 back.SetTextureYScale(Side.mid, 1/self.nextStretch);
             }
         }
+        Maze3DActor actor;
+        ThinkerIterator iterator = ThinkerIterator.Create("Maze3DActor");
+        while (actor = Maze3DActor(iterator.next()))
+        {
+            actor.scale.y = self.nextStretch;
+        }
+
     }
 
 

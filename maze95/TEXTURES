@@ -3,7 +3,7 @@ sprite SMILA0, 126, 126
 {
     XScale 2.5
     YScale 2.5
-    Offset 63, 150
+    Offset 63, 214
     Patch "patches/smiley.png", 0, 0
     {
         Alpha 0.5
@@ -15,7 +15,7 @@ sprite OPGLA0, 205, 25
 {
     XScale 3.67
     YScale 2
-    Offset 102, 12
+    Offset 102, 140
     Patch "patches/opengl.png", 0, 0
     {
         Alpha 0.5
@@ -27,7 +27,7 @@ sprite STRTA0, 509, 128
 {
     XScale 7
     YScale 2
-    Offset 250, 64
+    Offset 250, 192
     Patch "patches/start.png", 0, 0
     {
         Alpha 0.5

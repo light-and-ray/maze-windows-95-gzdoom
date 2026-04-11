@@ -329,7 +329,7 @@ class MazeGenerator : EventHandler
         int startMarkerOffset = 50;
         startMarkerPos.x = playerPos.x + startMarkerOffset * cos(playerAngle);
         startMarkerPos.y = playerPos.y + startMarkerOffset * sin(playerAngle);
-        startMarkerPos.z = 0.5 * TEXTURE_W;
+        startMarkerPos.z = 0;
         Actor a;
         a = Actor.Spawn("StartMarker", startMarkerPos);
         actorsToRemove.push(a);
@@ -337,7 +337,7 @@ class MazeGenerator : EventHandler
         Vector3 smileyPos;
         smileyPos.x = (things[things_current][0] + 0.5) * TEXTURE_W;
         smileyPos.y = (things[things_current][1] + 0.5) * TEXTURE_W;
-        smileyPos.z = 0.5 * TEXTURE_W;
+        smileyPos.z = 0;
         things_current++;
         a = Actor.Spawn("Smiley", smileyPos);
 
@@ -401,7 +401,7 @@ class MazeGenerator : EventHandler
             Vector3 openglLogoPos;
             openglLogoPos.x = (things[things_current][0] + 0.5) * TEXTURE_W;
             openglLogoPos.y = (things[things_current][1] + 0.5) * TEXTURE_W;
-            openglLogoPos.z = 0.5 * TEXTURE_W;
+            openglLogoPos.z = 0;
             things_current++;
             a = Actor.Spawn("OpenGLLogo", openglLogoPos);
             actorsToRemove.push(a);
