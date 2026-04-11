@@ -2,6 +2,6 @@ IWad
 {
 	Name = "Maze 95 UZDX"
 	AutoName = "Maze95UZDX"
-	Config = "Maze95UZDX-config-v-1-11"
+	Config = "Maze95UZDX-config-v-1-12"
 	Game = "Doom"
 }
