@@ -89,29 +89,41 @@ class Stretcher_t : Thinker
 
     void startStretchingUp()
     {
-        self.hideThings();
+        self.onStart();
         self.nextStretch = self.MIN_STRETCH;
         self.state = STRETCHING_UP;
     }
 
     void startStretchingDown()
     {
-        self.hideThings();
+        self.onStart();
         self.nextStretch = self.MAX_STRETCH - self.STRETCH_STEP;
         self.state = STRETCHING_DOWN;
     }
 
     void afterStretchingUp()
     {
+        self.onEnd();
         self.state = STRETCHER_NOTHING;
-        self.showThings();
     }
 
     void afterStretchingDown()
     {
+        self.onEnd();
         self.state = STRETCHER_NOTHING;
-        self.showThings();
         self.restart();
+    }
+
+    void onStart()
+    {
+        self.freezeActors();
+        self.hideThings();
+    }
+
+    void onEnd()
+    {
+        self.unFreezeActors();
+        self.showThings();
     }
 
 
@@ -183,6 +195,31 @@ class Stretcher_t : Thinker
                 }
             }
         }
+    }
+
+
+    void freezeActors()
+    {
+        Maze3DActor actor;
+        ThinkerIterator iterator = ThinkerIterator.Create("Maze3DActor");
+        while (actor = Maze3DActor(iterator.next()))
+        {
+            actor.stretchFrozen = true;
+        }
+        MazeGenerator generator = MazeGenerator(EventHandler.Find("MazeGenerator"));
+        generator.player.stretchFrozen = true;
+    }
+
+    void unFreezeActors()
+    {
+        Maze3DActor actor;
+        ThinkerIterator iterator = ThinkerIterator.Create("Maze3DActor");
+        while (actor = Maze3DActor(iterator.next()))
+        {
+            actor.stretchFrozen = false;
+        }
+        MazeGenerator generator = MazeGenerator(EventHandler.Find("MazeGenerator"));
+        generator.player.stretchFrozen = false;
     }
 
 }

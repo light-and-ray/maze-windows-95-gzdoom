@@ -1,6 +1,13 @@
 
 class Maze3DActor : Actor
-{    }
+{
+    bool stretchFrozen;
+    override void Tick()
+    {
+        if (self.stretchFrozen) return;
+        super.Tick();
+    }
+}
 
 
 class Smiley : Maze3DActor

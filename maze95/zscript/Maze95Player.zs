@@ -4,6 +4,8 @@ class Maze95Player : DoomPlayer replaces DoomPlayer
     bool upSideDown;
     bool _oldUpSideDown;
     const ROLL_STEP = 6;
+    bool stretchFrozen;
+
     Default
     {
         Height 64;
@@ -35,6 +37,7 @@ class Maze95Player : DoomPlayer replaces DoomPlayer
 
     override void Tick()
     {
+        if (self.stretchFrozen) return;
         super.Tick();
         if (upSideDown != _oldUpSideDown) {
             _oldUpSideDown = upSideDown;
