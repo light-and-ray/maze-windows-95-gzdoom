@@ -28,10 +28,12 @@ class MazeWalker : Maze3DActor
         double directionX = dx / lineLength;
         double directionY = dy / lineLength;
 
+        step = lineLength / floor(lineLength / step);
+
         double currentDist = step;
 
         // Loop to add all intermediate steps that are strictly less than the total length
-        while (currentDist < lineLength)
+        while (currentDist < lineLength-0.5)
         {
             Vector2 p;
             p.x = xA + directionX * currentDist;
@@ -72,10 +74,11 @@ class MazeWalker : Maze3DActor
         // For 90 degrees (PI/2): length = 1.5708 * 64 ≈ 100.53 units.
         double totalArcAngle = 90.0;
         double arcLength = (3.14159 * radius) / 2.0;
+        stepDist = arcLength / floor(arcLength / stepDist);
 
         double currentDist = stepDist;
 
-        while (currentDist < arcLength)
+        while (currentDist < arcLength-0.5)
         {
             // Calculate how far through the 90 degrees we are
             double progress = currentDist / arcLength;
@@ -100,11 +103,8 @@ class MazeWalker : Maze3DActor
             currentDist += stepDist;
         }
 
-        // Push final position (The end of the arc)
-        // The end position is: Center + Vector back towards original facing * radius
-        // which simplifies to: Original A + (Forward * 64) + (Right/Left * 64)
         double finalAngle = isRight ? startAngle - 90 : startAngle + 90;
-        // We want the position 64 units forward and 64 units to the side
+
         double destX = xA + cos(startAngle) * radius + cos(startAngle + turnDir) * radius;
         double destY = yA + sin(startAngle) * radius + sin(startAngle + turnDir) * radius;
 
