@@ -147,8 +147,8 @@ class Stretcher_t : Thinker
             actor.visibleByPlayer = false;
         }
 
-        double MAX_FOV = 120;
-        int LINE_TRACING_RESOLUTION = 2000;
+        double MAX_FOV = 360;
+        int LINE_TRACING_RESOLUTION = 6000;
         double ANGLE_STEP = MAX_FOV / LINE_TRACING_RESOLUTION;
         double PENETRATION_STEP = 5;
 
@@ -165,6 +165,8 @@ class Stretcher_t : Thinker
                 } else if (traceData.hitActor && traceData.hitActor is "Maze3DActor") {
                     actor = Maze3DActor(traceData.hitActor);
                     actor.visibleByPlayer = true;
+                } else {
+                    break;
                 }
                 offsetForward += traceData.Distance + PENETRATION_STEP;
             }

@@ -7,12 +7,8 @@ class Maze3DActor : Actor
     Default
     {
         Height 128;
-    }
-
-    override void Tick()
-    {
-        if (self.stretchFrozen) return;
-        super.Tick();
+        Radius 10;
+        +NOGRAVITY;
     }
 }
 
@@ -26,9 +22,7 @@ class Smiley : Maze3DActor
 
     Default
     {
-        Height 100;
         Radius 20;
-        +NOGRAVITY;
         +SOLID;
     }
     States
@@ -81,7 +75,6 @@ class OpenGLLogo : Maze3DActor
 {
     Default
     {
-        +NOGRAVITY;
         +FORCEXYBILLBOARD;
     }
     States
@@ -94,10 +87,6 @@ class OpenGLLogo : Maze3DActor
 
 class StartMarker : Maze3DActor
 {
-    Default
-    {
-        +NOGRAVITY;
-    }
     States
     {
         Spawn:
@@ -112,7 +101,6 @@ class PlatonicSolid : Maze3DActor
     bool destroyMeAfterRotation;
     Default
     {
-        +NOGRAVITY;
         +SOLID;
         Radius 40;
     }
@@ -181,10 +169,6 @@ class PlatonicSolid : Maze3DActor
 
 class MissingShadersWarning : Maze3DActor
 {
-    Default
-    {
-        +NOGRAVITY;
-    }
     States
     {
         Spawn:
