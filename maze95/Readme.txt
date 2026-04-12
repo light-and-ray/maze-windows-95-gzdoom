@@ -26,6 +26,7 @@ Ultimate ZDoom Experience opens a lot of possibilities for you!:
     4. Hard - More tight maze generation; sometimes the rule "turn always left" / "turn always right" is broken
 - Toggle freelook on "F" key
 - You will probably want to use noclip. Use command "bind v noclip2" and toggle noclip on "V" key
+- To open the auto walking screensaver map separately - use "map titlemap" command
 - You can use universal GZDoom/UZdoom mods. For example, I recommend
     https://www.moddb.com/mods/gzdoom-demake-shaders/downloads
 - If you want to make a mod - you can do it
