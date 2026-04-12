@@ -8,7 +8,7 @@ enum WalkerState_t
 
 class MazeWalker : Maze3DActor
 {
-    void getLineMoveIntermediateSteps(Array<double> points, double xA, double yA, double xB, double yB, double step, bool returnX)
+    void getLineStraightMoveIntermediateSteps(Array<double> points, double xA, double yA, double xB, double yB, double step, bool returnX)
     {
         double dx = xB - xA;
         double dy = yB - yA;
@@ -54,6 +54,68 @@ class MazeWalker : Maze3DActor
         }
     }
 
+
+    void getArcMoveIntermediateSteps(Array<double> points, double xA, double yA, double startAngle, double stepDist, bool isRight, bool returnX)
+    {
+        // The radius is fixed at 64
+        double radius = 64.0;
+
+        // Calculate the center of the circle (the pivot point)
+        // If turning right, the center is 90 degrees to our right
+        // If turning left, the center is 90 degrees to our left
+        double turnDir = isRight ? -90 : 90;
+        double centerX = xA + cos(startAngle + turnDir) * radius;
+        double centerY = yA + sin(startAngle + turnDir) * radius;
+
+        // We are traveling a 90-degree arc.
+        // Arc length = (angle_in_radians) * radius.
+        // For 90 degrees (PI/2): length = 1.5708 * 64 ≈ 100.53 units.
+        double totalArcAngle = 90.0;
+        double arcLength = (3.14159 * radius) / 2.0;
+
+        double currentDist = stepDist;
+
+        while (currentDist < arcLength)
+        {
+            // Calculate how far through the 90 degrees we are
+            double progress = currentDist / arcLength;
+            double currentAngleOffset = progress * totalArcAngle;
+
+            // Target angle from the center of the circle
+            // If turning right, we start at startAngle+90 and go to startAngle
+            // If turning left, we start at startAngle-90 and go to startAngle
+            double angleFromCenter;
+            if (isRight) {
+                angleFromCenter = (startAngle + 90) - currentAngleOffset;
+            } else {
+                angleFromCenter = (startAngle - 90) + currentAngleOffset;
+            }
+
+            if (returnX) {
+                points.Push(centerX + cos(angleFromCenter) * radius);
+            } else {
+                points.Push(centerY + sin(angleFromCenter) * radius);
+            }
+
+            currentDist += stepDist;
+        }
+
+        // Push final position (The end of the arc)
+        // The end position is: Center + Vector back towards original facing * radius
+        // which simplifies to: Original A + (Forward * 64) + (Right/Left * 64)
+        double finalAngle = isRight ? startAngle - 90 : startAngle + 90;
+        // We want the position 64 units forward and 64 units to the side
+        double destX = xA + cos(startAngle) * radius + cos(startAngle + turnDir) * radius;
+        double destY = yA + sin(startAngle) * radius + sin(startAngle + turnDir) * radius;
+
+        if (returnX) {
+            points.Push(destX);
+        } else {
+            points.Push(destY);
+        }
+    }
+
+
     bool turnsAlwaysRight;
     Array<double> intermediateStepsX;
     Array<double> intermediateStepsY;
@@ -97,94 +159,58 @@ class MazeWalker : Maze3DActor
 
     void thinkingTick()
     {
-        double turns[4];
-        turns[0] = (self.turnsAlwaysRight ? -90 : 90);
-        turns[1] = 0;
-        turns[2] = (self.turnsAlwaysRight ? 90 : -90);
-        if (self.turnsAlwaysRight)
-        {
+        // if (self.turnsAlwaysRight)
+        // {
             do {
-                if (self.tryWalkRight()) break;
-                if (self.tryWalkForward()) break;
-                if (self.tryWalkLeft()) break;
-                if (self.tryWalkBackward()) break;
+                if (self.tryWalkRight(false)) break;
+                if (self.tryWalkStraight(0, false)) break;
+                if (self.tryWalkLeft(false)) break;
+                if (self.tryWalkRight(true)) break;
+                if (self.tryWalkStraight(-180, true)) break;
+                if (self.tryWalkLeft(true)) break;
             } while (false);
-        }
-        else
-        {
-            do {
-                if (self.tryWalkLeft()) break;
-                if (self.tryWalkForward()) break;
-                if (self.tryWalkRight()) break;
-                if (self.tryWalkBackward()) break;
-            } while (false);
-        }
-
+        // }
+        // else
+        // {
+        //     do {
+        //         if (self.tryWalkLeft()) break;
+        //         if (self.tryWalkForward()) break;
+        //         if (self.tryWalkRight()) break;
+        //         if (self.tryWalkBackward()) break;
+        //     } while (false);
+        // }
         self.currentStep = 0;
         self.walkerState = WALKING;
         self.walkTick();
     }
 
 
-    bool tryWalkRight()
+    bool tryWalkRight(bool isBack)
     {
-        return false;
+        double turn = -90;
+        return self.tryWalkArc(-90, true, isBack);
     }
 
-    bool tryWalkLeft()
+    bool tryWalkLeft(bool isBack)
     {
-        return false;
+        double turn = 90;
+        return self.tryWalkArc(90, false, isBack);
     }
 
-    bool tryWalkForward()
+    bool tryWalkArc(double turn, bool isRight, bool isBack)
     {
-        FLineTraceData traceData;
-        self.LineTrace(self.angle, 10000, 0, TRF_THRUACTORS, 64, 64, 0, traceData);
+        if (!self._testTurn(turn, isBack)) return false;
+
         Vector2 A = (self.pos.x, self.pos.y);
-        Vector2 B = (traceData.HitLocation.x, traceData.HitLocation.y);
-        Vector2 dirAB = B - A;
-        double dist = dirAB.Length();
-        if (dist <= 128)
-        {
-            return false;
-        }
-        else
-        {
-            B = A + dirAB.Unit() * 128;
-        }
         self.intermediateStepsX.clear();
         self.intermediateStepsY.clear();
         self.intermediateStepsAngle.clear();
-        self.getLineMoveIntermediateSteps(intermediateStepsX, A.x, A.y, B.x, B.y, self.WALK_STEP, true);
-        self.getLineMoveIntermediateSteps(intermediateStepsY, A.x, A.y, B.x, B.y, self.WALK_STEP, false);
-        for (int i = 0; i < intermediateStepsX.size(); i++) {
-            self.intermediateStepsAngle.push(self.angle);
-        }
-        return true;
-    }
 
-    bool tryWalkBackward()
-    {
-        double turn = (self.turnsAlwaysRight ? -180 : 180);
-        FLineTraceData traceData;
-        self.LineTrace(self.angle + turn, 10000, 0, TRF_THRUACTORS, 64, 64, 0, traceData);
-        Vector2 A = (self.pos.x, self.pos.y);
-        Vector2 B = (traceData.HitLocation.x, traceData.HitLocation.y);
-        Vector2 dirAB = B - A;
-        double dist = dirAB.Length();
-        if (dist <= 128)
-        {
-            return false;
-        }
-        else
-        {
-            B = A + dirAB.Unit() * 128;
-        }
-        self.intermediateStepsX.clear();
-        self.intermediateStepsY.clear();
-        self.intermediateStepsAngle.clear();
-        self.getLineMoveIntermediateSteps(intermediateStepsX, A.x, A.y, B.x, B.y, self.WALK_STEP, true);
-        self.getLineMoveIntermediateSteps(intermediateStepsY, A.x, A.y, B.x, B.y, self.WALK_STEP, false);
+        double startAngle = isBack ? self.angle - 180 : self.angle;
+        self.getArcMoveIntermediateSteps(intermediateStepsX, A.x, A.y, startAngle, self.WALK_STEP, isRight, true);
+        self.getArcMoveIntermediateSteps(intermediateStepsY, A.x, A.y, startAngle, self.WALK_STEP, isRight, false);
+
+        double totalSteps = intermediateStepsX.size();
         double angleStep = turn / intermediateStepsX.size();
         for (int i = 0; i < intermediateStepsX.size(); i++) {
             self.intermediateStepsAngle.push(self.angle + angleStep*(i+1));
@@ -192,6 +218,51 @@ class MazeWalker : Maze3DActor
         return true;
     }
 
+    bool tryWalkStraight(double turn, bool isBack)
+    {
+        if (!self._testTurn(turn, isBack)) return false;
+
+        Vector2 A = (self.pos.x, self.pos.y);
+        Vector2 B;
+        B.x = A.x + cos(self.angle + turn) * 128;
+        B.y = A.y + sin(self.angle + turn) * 128;
+        self.intermediateStepsX.clear();
+        self.intermediateStepsY.clear();
+        self.intermediateStepsAngle.clear();
+        self.getLineStraightMoveIntermediateSteps(intermediateStepsX, A.x, A.y, B.x, B.y, self.WALK_STEP, true);
+        self.getLineStraightMoveIntermediateSteps(intermediateStepsY, A.x, A.y, B.x, B.y, self.WALK_STEP, false);
+        double angleStep = turn / intermediateStepsX.size();
+        for (int i = 0; i < intermediateStepsX.size(); i++) {
+            self.intermediateStepsAngle.push(self.angle + angleStep*(i+1));
+        }
+        return true;
+    }
+
+
+    bool _testTurn(double turn, bool isBack)
+    {
+        FLineTraceData traceData;
+        Vector3 tracePos;
+        if (!isBack) {
+            tracePos.x = self.pos.x + cos(self.angle) * 64;
+            tracePos.y = self.pos.y + sin(self.angle) * 64;
+        } else {
+            tracePos.x = self.pos.x + cos(self.angle) * -64;
+            tracePos.y = self.pos.y + sin(self.angle) * -64;
+            turn + 180;
+        }
+        tracePos.z = self.pos.z + 64;
+        self.LineTrace(self.angle + turn, 10000, 0, TRF_THRUACTORS|TRF_ABSPOSITION, tracePos.z, tracePos.x, tracePos.y, traceData);
+        Vector2 A = (tracePos.x, tracePos.y);
+        Vector2 B = (traceData.HitLocation.x, traceData.HitLocation.y);
+        Vector2 dirAB = B - A;
+        double dist = dirAB.Length();
+        if (dist <= 128)
+        {
+            return false;
+        }
+        return true;
+    }
 
 
     void walkTick()
@@ -251,8 +322,8 @@ class MazeWalker : Maze3DActor
         B.x = A.x + 64 * cos(self.angle);
         B.y = A.y + 64 * sin(self.angle);
 
-        self.getLineMoveIntermediateSteps(intermediateStepsX, A.x, A.y, B.x, B.y, self.WALK_STEP, true);
-        self.getLineMoveIntermediateSteps(intermediateStepsY, A.x, A.y, B.x, B.y, self.WALK_STEP, false);
+        self.getLineStraightMoveIntermediateSteps(intermediateStepsX, A.x, A.y, B.x, B.y, self.WALK_STEP, true);
+        self.getLineStraightMoveIntermediateSteps(intermediateStepsY, A.x, A.y, B.x, B.y, self.WALK_STEP, false);
         for (int i = 0; i < intermediateStepsX.size(); i++) {
             self.intermediateStepsAngle.push(self.angle);
         }
