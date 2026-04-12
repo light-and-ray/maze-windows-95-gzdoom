@@ -130,6 +130,7 @@ class MazeWalker : Maze3DActor
     WalkerState_t beforeRotationState;
     const ROLL_STEP = 6;
     bool needUsePickUps;
+    bool instantTurnBack;
 
     override void PostBeginPlay()
     {
@@ -171,7 +172,12 @@ class MazeWalker : Maze3DActor
                 if (self.tryWalkRight()) break;
                 if (self.tryWalkForward()) break;
                 if (self.tryWalkLeft()) break;
-                self.turnBack();
+                if (self.instantTurnBack) {
+                    self.angle += 180;
+                    return;
+                } else {
+                    self.turnBack();
+                }
             } while (false);
         }
         else
@@ -180,7 +186,12 @@ class MazeWalker : Maze3DActor
                 if (self.tryWalkLeft()) break;
                 if (self.tryWalkForward()) break;
                 if (self.tryWalkRight()) break;
-                self.turnBack();
+                if (self.instantTurnBack) {
+                    self.angle += 180;
+                    return;
+                } else {
+                    self.turnBack();
+                }
             } while (false);
         }
         self.currentStep = 0;

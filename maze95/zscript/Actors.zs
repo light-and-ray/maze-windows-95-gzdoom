@@ -175,6 +175,12 @@ class Rat : MazeWalker
             RATA A -1;
             loop;
     }
+
+    override void PostBeginPlay()
+    {
+        self.instantTurnBack = true;
+        super.PostBeginPlay();
+    }
 }
 
 
