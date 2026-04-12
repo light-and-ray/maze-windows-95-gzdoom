@@ -148,7 +148,7 @@ class Stretcher_t : Thinker
         }
 
         double MAX_FOV = 360;
-        int LINE_TRACING_RESOLUTION = 6000;
+        int LINE_TRACING_RESOLUTION = 3000;
         double ANGLE_STEP = MAX_FOV / LINE_TRACING_RESOLUTION;
         double PENETRATION_STEP = 5;
 

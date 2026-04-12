@@ -3,6 +3,7 @@ enum WalkerState_t
     THINKING = 0,
     WALKING = 1,
     WALKER_NOTHING = 2,
+    ROTATING = 3,
 }
 
 class MazeWalker : Maze3DActor
@@ -65,6 +66,8 @@ class MazeWalker : Maze3DActor
 
     bool upSideDown;
     bool _oldUpSideDown;
+    WalkerState_t beforeRotationState;
+    const ROLL_STEP = 6;
 
     override void PostBeginPlay()
     {
@@ -76,10 +79,19 @@ class MazeWalker : Maze3DActor
     {
         super.Tick();
 
+        if (self.upSideDown != self._oldUpSideDown)
+        {
+            self._oldUpSideDown = self.upSideDown;
+            self.beforeRotationState = self.walkerState;
+            self.walkerState = ROTATING;
+        }
+
         if (self.walkerState == THINKING) {
             self.thinkingTick();
         } else if (self.walkerState == WALKING) {
             self.walkTick();
+        } else if (self.walkerState == ROTATING) {
+            self.rotatingTick();
         }
     }
 
@@ -141,6 +153,40 @@ class MazeWalker : Maze3DActor
         if (self.currentStep >= self.intermediateStepsX.size())
         {
             self.walkerState = THINKING;
+        }
+    }
+
+    void rotatingTick()
+    {
+        bool complete = false;
+
+        if (self.upSideDown)
+        {
+            A_SetRoll(self.roll+ROLL_STEP, SPF_INTERPOLATE);
+            if (self.roll >= 180) {
+                complete = true;
+                A_SetRoll(180, SPF_INTERPOLATE);
+            }
+        }
+        else
+        {
+            A_SetRoll(self.roll-ROLL_STEP, SPF_INTERPOLATE);
+            if (self.roll <= 0) {
+                complete = true;
+                A_SetRoll(0, SPF_INTERPOLATE);
+            }
+        }
+        if (complete)
+        {
+            self.walkerState = self.beforeRotationState;
+            PlatonicSolid solid;
+            ThinkerIterator iterator = ThinkerIterator.Create("PlatonicSolid");
+            while (solid = PlatonicSolid(iterator.next()))
+            {
+                if (solid && solid.destroyMeAfterRotation) {
+                    solid.destroy();
+                }
+            }
         }
     }
 }
