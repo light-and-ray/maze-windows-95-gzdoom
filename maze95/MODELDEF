@@ -1,9 +1,13 @@
+// in the actual screensaver their pitch is rotating, but due to screen stretcher
+// compensation here (*0.82) it's not possible to make this rotation without distortion
+
 Model PlatonicSolid
 {
     Model 0 "models/tetrahedron.obj"
     Skin 0 "gray"
     Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
     Offset 0 0 32
+    PitchOffset 12.0
     ROTATING
     USEACTORPITCH
     FrameIndex PLAT A 0 0
@@ -15,6 +19,7 @@ Model PlatonicSolid
     Skin 0 "gray"
     Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
     Offset 0 0 32
+    PitchOffset 4.0
     ROTATING
     USEACTORPITCH
     FrameIndex PLAT B 0 0
@@ -26,6 +31,7 @@ Model PlatonicSolid
     Skin 0 "gray"
     Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
     Offset 0 0 32
+    PitchOffset 16.0 // 12 + 4
     ROTATING
     USEACTORPITCH
     FrameIndex PLAT C 0 0
@@ -37,6 +43,7 @@ Model PlatonicSolid
     Skin 0 "gray"
     Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
     Offset 0 0 32
+    PitchOffset 34.0 // 30 + 4
     ROTATING
     USEACTORPITCH
     FrameIndex PLAT D 0 0
@@ -48,8 +55,45 @@ Model PlatonicSolid
     Skin 0 "gray"
     Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
     Offset 0 0 32
-    PitchOffset 54.74
+    PitchOffset 66.74 // 54.74 + 12
     ROTATING
     USEACTORPITCH
     FrameIndex PLAT E 0 0
 }
+
+Model PlatonicSolid
+{
+    Model 0 "models/dodecahedron.obj"
+    Skin 0 "gray"
+    Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
+    Offset 0 0 32
+    PitchOffset 76.0 // 60 + 16
+    ROTATING
+    USEACTORPITCH
+    FrameIndex PLAT F 0 0
+}
+
+Model PlatonicSolid
+{
+    Model 0 "models/icosahedron.obj"
+    Skin 0 "gray"
+    Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
+    Offset 0 0 32
+    PitchOffset 94.0 // 90 + 4
+    ROTATING
+    USEACTORPITCH
+    FrameIndex PLAT G 0 0
+}
+
+Model PlatonicSolid
+{
+    Model 0 "models/octahedron.obj"
+    Skin 0 "gray"
+    Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
+    Offset 0 0 32
+    PitchOffset 49.0 // 45 + 4
+    ROTATING
+    USEACTORPITCH
+    FrameIndex PLAT H 0 0
+}
+

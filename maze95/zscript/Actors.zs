@@ -119,6 +119,15 @@ class PlatonicSolid : Maze3DActor
         tetrahedron2:
             PLAT E -1;
             loop;
+        dodecahedron2:
+            PLAT F -1;
+            loop;
+        icosahedron2:
+            PLAT G -1;
+            loop;
+        octahedron2:
+            PLAT H -1;
+            loop;
     }
 
     override bool CanCollideWith(Actor other, bool passive)
@@ -140,7 +149,7 @@ class PlatonicSolid : Maze3DActor
 
     void setRandomModel()
     {
-        int modelIndex = random(1, 5);
+        int modelIndex = random(1, 8);
         if (modelIndex == 1) {
             SetState(ResolveState("tetrahedron"));
         } else if (modelIndex == 2) {
@@ -151,6 +160,12 @@ class PlatonicSolid : Maze3DActor
             SetState(ResolveState("icosahedron"));
         } else if (modelIndex == 5) {
             SetState(ResolveState("tetrahedron2"));
+        } else if (modelIndex == 6) {
+            SetState(ResolveState("dodecahedron2"));
+        } else if (modelIndex == 7) {
+            SetState(ResolveState("icosahedron2"));
+        } else if (modelIndex == 8) {
+            SetState(ResolveState("octahedron2"));
         }
     }
 }
