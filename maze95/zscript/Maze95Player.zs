@@ -39,7 +39,7 @@ class Maze95Player : DoomPlayer replaces DoomPlayer
 
     override void Tick()
     {
-        if (self.stretchFrozen) return;
+        if (self.stretchFrozen && !(self.player.cheats & (CF_NOCLIP | CF_NOCLIP2))) return;
         super.Tick();
         if (upSideDown != _oldUpSideDown) {
             _oldUpSideDown = upSideDown;
