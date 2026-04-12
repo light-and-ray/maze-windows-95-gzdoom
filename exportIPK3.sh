@@ -1,4 +1,4 @@
 #!/bin/bash -ex
 cd maze95
-rm -f ../maze95.ipk3
-zip -rq ../maze95.ipk3 .
+rm -f ../Maze95UZDX.ipk3
+zip -rq ../Maze95UZDX.ipk3 .
