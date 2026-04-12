@@ -177,31 +177,6 @@ class MazeGenerator : EventHandler
             int cellSide = level.lines[i].args[2];
             cellsToLinedefs[y][x][cellSide] = i;
         }
-        for (int y = 0; y < MAZE_W; y++) {
-            for (int x = 0; x < MAZE_W; x++) {
-                double OFFSET = 3;
-                self._spawnCellToLineActor(x, y, OFFSET, OFFSET);
-                self._spawnCellToLineActor(x, y, TEXTURE_W-OFFSET, OFFSET);
-                self._spawnCellToLineActor(x, y, OFFSET, TEXTURE_W-OFFSET);
-                self._spawnCellToLineActor(x, y, TEXTURE_W-OFFSET, TEXTURE_W-OFFSET);
-                self._spawnCellToLineActor(x, y, TEXTURE_W/2, TEXTURE_W/2);
-            }
-        }
-
-    }
-
-    void _spawnCellToLineActor(int x, int y, double offsetX, double offsetY)
-    {
-        Vector3 pos;
-        pos.x = (x) * TEXTURE_W + offsetX;
-        pos.y = (y) * TEXTURE_W + offsetY;
-        pos.z = 0.5*TEXTURE_W;;
-        CellToLineActor actor;
-        actor = CellToLineActor(Actor.Spawn("CellToLineActor", pos));
-        actor.lines.push(cellsToLinedefs[y][x][0]);
-        actor.lines.push(cellsToLinedefs[y][x][1]);
-        actor.lines.push(cellsToLinedefs[y][x][2]);
-        actor.lines.push(cellsToLinedefs[y][x][3]);
     }
 
 
@@ -415,7 +390,7 @@ class MazeGenerator : EventHandler
             Vector3 platonicSolidPos;
             platonicSolidPos.x = (things[things_current][0] + 0.5) * TEXTURE_W;
             platonicSolidPos.y = (things[things_current][1] + 0.5) * TEXTURE_W;
-            platonicSolidPos.z = 0.25 * TEXTURE_W;
+            platonicSolidPos.z = 0;
             things_current++;
             a = Actor.Spawn("PlatonicSolid", platonicSolidPos);
             actorsToRemove.push(a);

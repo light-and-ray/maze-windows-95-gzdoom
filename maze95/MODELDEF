@@ -3,6 +3,7 @@ Model PlatonicSolid
     Model 0 "models/tetrahedron.obj"
     Skin 0 "gray"
     Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
+    Offset 0 0 32
     ROTATING
     USEACTORPITCH
     FrameIndex PLAT A 0 0
@@ -13,6 +14,7 @@ Model PlatonicSolid
     Model 0 "models/octahedron.obj"
     Skin 0 "gray"
     Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
+    Offset 0 0 32
     ROTATING
     USEACTORPITCH
     FrameIndex PLAT B 0 0
@@ -23,6 +25,7 @@ Model PlatonicSolid
     Model 0 "models/dodecahedron.obj"
     Skin 0 "gray"
     Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
+    Offset 0 0 32
     ROTATING
     USEACTORPITCH
     FrameIndex PLAT C 0 0
@@ -33,6 +36,7 @@ Model PlatonicSolid
     Model 0 "models/icosahedron.obj"
     Skin 0 "gray"
     Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
+    Offset 0 0 32
     ROTATING
     USEACTORPITCH
     FrameIndex PLAT D 0 0
@@ -43,6 +47,7 @@ Model PlatonicSolid
     Model 0 "models/tetrahedron.obj"
     Skin 0 "gray"
     Scale 24.6 24.6 30.0 // 24.6 = 30 * 0.82
+    Offset 0 0 32
     PitchOffset 54.74
     ROTATING
     USEACTORPITCH

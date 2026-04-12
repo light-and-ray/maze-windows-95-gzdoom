@@ -6,18 +6,6 @@ enum StretcherState_t
 }
 
 
-class CellToLineActor : Maze3DActor
-{
-    Array<int> lines;
-    Default
-    {
-        Radius 4;
-        Height 128;
-        +NOGRAVITY;
-    }
-}
-
-
 class Stretcher_t : Thinker
 {
     StretcherState_t state;
@@ -26,7 +14,7 @@ class Stretcher_t : Thinker
     double MAX_WALLS_STRETCH;
     const MIN_STRETCH = STRETCH_STEP;
     double nextStretch;
-    Array<int> linesToShow;
+    Map<int, bool> linesToShow;
     const HIDDEN_OFFSET = 30000;
 
     override void PostBeginPlay()
@@ -128,13 +116,13 @@ class Stretcher_t : Thinker
     void onStart()
     {
         self.freezeActors();
-        self.hideThings();
+        self.hideThingsAndWalls();
     }
 
     void onEnd()
     {
         self.unFreezeActors();
-        self.showThings();
+        self.showThingsAndWalls();
     }
 
 
@@ -145,34 +133,56 @@ class Stretcher_t : Thinker
     }
 
 
-    void hideThings()
+    void hideThingsAndWalls()
     {
         if (Skill == 0) return;
         self.linesToShow.clear();
         MazeGenerator generator = MazeGenerator(EventHandler.Find("MazeGenerator"));
         Actor camera = generator.player.player.camera;
+
         Maze3DActor actor;
         ThinkerIterator iterator = ThinkerIterator.Create("Maze3DActor");
         while (actor = Maze3DActor(iterator.next()))
         {
-            if (actor)
+            actor.visibleByPlayer = false;
+        }
+
+        double MAX_FOV = 120;
+        int LINE_TRACING_RESOLUTION = 2000;
+        double ANGLE_STEP = MAX_FOV / LINE_TRACING_RESOLUTION;
+        double PENETRATION_STEP = 5;
+
+        for (int i = 0; i < LINE_TRACING_RESOLUTION; i++)
+        {
+            FLineTraceData traceData;
+            double offsetForward = 0;
+            while (true)
             {
-                if (!camera.CheckSight(actor)) {
-                        actor.bINVISIBLE = true;
-                } else {
-                    if (actor is "CellToLineActor") {
-                        CellToLineActor actor2 = CellToLineActor(actor);
-                        for (int i = 0; i < actor2.lines.size(); i++) {
-                            self.linesToShow.push(actor2.lines[i]);
-                        }
-                    }
+                camera.LineTrace(camera.angle - MAX_FOV/2 + ANGLE_STEP*i, 10000, 0, TRF_ALLACTORS, 64, offsetForward, 0, traceData);
+                if (traceData.HitLine) {
+                    self.linesToShow.InsertNew(traceData.HitLine.Index());
+                    break;
+                } else if (traceData.hitActor && traceData.hitActor is "Maze3DActor") {
+                    actor = Maze3DActor(traceData.hitActor);
+                    actor.visibleByPlayer = true;
                 }
+                offsetForward += traceData.Distance + PENETRATION_STEP;
             }
         }
 
+        iterator = ThinkerIterator.Create("Maze3DActor");
+        while (actor = Maze3DActor(iterator.next()))
+        {
+            if (!actor.visibleByPlayer)
+            {
+                actor.bINVISIBLE = true;
+            }
+        }
+
+
         for (int lineNum = 0; lineNum < Level.lines.size(); lineNum++)
         {
-            if (self.linesToShow.find(lineNum) == self.linesToShow.size())
+            if (!self.linesToShow.CheckKey(lineNum))
             {
                 if (Level.lines[lineNum].sidedef[Line.front]) {
                     Level.lines[lineNum].sidedef[Line.front].AddTextureYOffset(Side.mid, HIDDEN_OFFSET);
@@ -184,7 +194,7 @@ class Stretcher_t : Thinker
         }
     }
 
-    void showThings()
+    void showThingsAndWalls()
     {
         if (Skill == 0) return;
         Maze3DActor actor;
@@ -196,7 +206,7 @@ class Stretcher_t : Thinker
 
         for (int lineNum = 0; lineNum < Level.lines.size(); lineNum++)
         {
-            if (self.linesToShow.find(lineNum) == self.linesToShow.size())
+            if (!self.linesToShow.CheckKey(lineNum))
             {
                 if (Level.lines[lineNum].sidedef[Line.front]) {
                     Level.lines[lineNum].sidedef[Line.front].AddTextureYOffset(Side.mid, -HIDDEN_OFFSET);

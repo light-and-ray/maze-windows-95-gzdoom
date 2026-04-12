@@ -2,6 +2,13 @@
 class Maze3DActor : Actor
 {
     bool stretchFrozen;
+    bool visibleByPlayer;
+
+    Default
+    {
+        Height 128;
+    }
+
     override void Tick()
     {
         if (self.stretchFrozen) return;
