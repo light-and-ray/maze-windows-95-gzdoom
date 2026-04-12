@@ -317,15 +317,25 @@ class MazeGenerator : EventHandler
         a = Actor.Spawn("Smiley", smileyPos);
 
         actorsToRemove.push(a);
+        int ratCellX = things[things_current][0];
+        int ratCellY = things[things_current][1];
         Vector3 ratPos;
-        ratPos.x = (things[things_current][0] + 0.5) * TEXTURE_W;
-        ratPos.y = (things[things_current][1] + 0.5) * TEXTURE_W;
+        ratPos.x = (ratCellX + 0.5) * TEXTURE_W;
+        ratPos.y = (ratCellY + 0.5) * TEXTURE_W;
         ratPos.z = 0;
         things_current++;
         a = Actor.Spawn("Rat", ratPos);
-        Rat ratActor = Rat(a);
-        ratActor.turnsAlwaysRight = (random(0, 1) == 1);
         actorsToRemove.push(a);
+        Rat ratActor = Rat(a);
+        double ratAngle;
+        ratActor.turnsAlwaysRight = (random(0, 1) == 1);
+        for (int i = 0; i < 4; i++) {
+            if (cells[ratCellY][ratCellX][i] != 0) {
+                ratAngle = -90 + 90*i;
+                ratActor.A_SetAngle(ratAngle);
+                break;
+            }
+        }
 
         if (Level.levelName == "TITLEMAP")
         {

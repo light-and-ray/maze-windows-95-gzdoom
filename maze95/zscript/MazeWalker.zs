@@ -73,11 +73,13 @@ class MazeWalker : Maze3DActor
     {
         super.PostBeginPlay();
         self.walkAngle = self.angle;
+        self.initialWalk();
     }
 
     override void Tick()
     {
         super.Tick();
+        if (self.stretchFrozen) return;
 
         if (self.upSideDown != self._oldUpSideDown)
         {
@@ -97,7 +99,6 @@ class MazeWalker : Maze3DActor
 
     void thinkingTick()
     {
-        if (self.stretchFrozen) return;
         double turns[4];
         turns[0] = (self.turnsAlwaysRight ? -90 : 90);
         turns[1] = 0;
@@ -142,17 +143,14 @@ class MazeWalker : Maze3DActor
     {
         double x = self.intermediateStepsX[self.currentStep];
         double y = self.intermediateStepsY[self.currentStep];
-        if (!self.stretchFrozen)
-        {
-            self.setOrigin((x, y, self.pos.z), true);
-            self.TestMobjLocation();
-        }
+        self.setOrigin((x, y, self.pos.z), true);
+        self.TestMobjLocation();
         double newAngle = self.intermediateStepsAngle[self.currentStep];
         self.A_SetAngle(newAngle, SPF_INTERPOLATE);
         self.currentStep += 1;
         if (self.currentStep >= self.intermediateStepsX.size())
         {
-            self.walkerState = THINKING;
+            self.walkerState = WALKER_NOTHING;
         }
     }
 
@@ -189,4 +187,22 @@ class MazeWalker : Maze3DActor
             }
         }
     }
+
+
+    void initialWalk()
+    {
+        Vector2 A = (self.pos.x, self.pos.y);
+        Vector2 B;
+        B.x = A.x + 64 * cos(self.angle);
+        B.y = A.y + 64 * sin(self.angle);
+
+        self.getLineMoveIntermediateSteps(intermediateStepsX, A.x, A.y, B.x, B.y, self.WALK_STEP, true);
+        self.getLineMoveIntermediateSteps(intermediateStepsY, A.x, A.y, B.x, B.y, self.WALK_STEP, false);
+        for (int i = 0; i < intermediateStepsX.size(); i++) {
+            self.intermediateStepsAngle.push(self.angle);
+        }
+        self.currentStep = 0;
+        self.walkerState = WALKING;
+    }
+
 }
