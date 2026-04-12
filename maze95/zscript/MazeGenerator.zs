@@ -465,10 +465,12 @@ class MazeGenerator : EventHandler
             int y = things[things_current][1];
             things_current++;
             int cellSide;
-            for (int tmp = 0; tmp < 10; tmp++) {
+            int tmp;
+            for (tmp = 0; tmp < 10; tmp++) {
                 cellSide = random(0, 3);
                 if (cells[y][x][cellSide] == 0) break;
             }
+            if (tmp == 10) break;
             Line line;
             line = level.lines[cellsToLinedefs[y][x][cellSide]];
             line.sidedef[Line.front].SetTexture(Side.mid, openglWallTexture);
@@ -562,10 +564,12 @@ class MazeGenerator : EventHandler
             int x = breakers[i][0];
             int y = breakers[i][1];
             int cellSide;
-            for (int tmp = 0; tmp < 10; tmp++) {
+            int tmp;
+            for (tmp = 0; tmp < 10; tmp++) {
                 cellSide = random(0, 3);
                 if (cells[y][x][cellSide] == 0) break;
             }
+            if (tmp == 10) break;
             int lineNum;
             lineNum = cellsToLinedefs[y][x][cellSide];
             makeLineInvisible(lineNum);
