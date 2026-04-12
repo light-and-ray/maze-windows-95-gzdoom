@@ -13,7 +13,7 @@ class Maze3DActor : Actor
 }
 
 
-class Smiley : Maze3DActor
+class Smilely : Maze3DActor
 {
     const PROMPT_SECS = 2.5;
     int lastPromptTime;
@@ -40,16 +40,11 @@ class Smiley : Maze3DActor
 
     override bool CanCollideWith(Actor other, bool passive)
     {
-        if (other is "AutoWalkingCamera")
-        {
-            self.restart();
-            return false;
-        }
-        if (noPrompt || (level.time - lastPromptTime) <= PROMPT_SECS*35*2){
-            return false;
-        }
         if (other is "Maze95Player")
         {
+            if (noPrompt || (level.time - lastPromptTime) <= PROMPT_SECS*35*2){
+                return false;
+            }
             MazeGenerator generator = MazeGenerator(EventHandler.Find("MazeGenerator"));
             if (generator.completedLevels > 1) {
                 noPrompt = true;
@@ -140,12 +135,6 @@ class PlatonicSolid : Maze3DActor
             player.upSideDown = !player.upSideDown;
             self.destroyMeAfterRotation = true;
         }
-        if (other is "AutoWalkingCamera")
-        {
-            AutoWalkingCamera camera = AutoWalkingCamera(other);
-            camera.upSideDown = !camera.upSideDown;
-            self.destroyMeAfterRotation = true;
-        }
         return false;
     }
 
@@ -198,5 +187,13 @@ class AutoWalkingCamera : MazeWalker
         CameraFOV 90;
         +SOLID;
     }
+
+
+    override void PostBeginPlay()
+    {
+        self.needUsePickUps = true;
+        super.PostBeginPlay();
+    }
+
 }
 

@@ -4,7 +4,7 @@ sprite SMILA0, 126, 126
     XScale 2.5
     YScale 2.5
     Offset 63, 214
-    Patch "patches/smiley.png", 0, 0
+    Patch "patches/smilely.png", 0, 0
     {
         Alpha 0.5
         Style CopyNewAlpha

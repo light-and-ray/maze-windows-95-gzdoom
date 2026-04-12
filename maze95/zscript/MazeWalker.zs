@@ -129,6 +129,7 @@ class MazeWalker : Maze3DActor
     bool _oldUpSideDown;
     WalkerState_t beforeRotationState;
     const ROLL_STEP = 6;
+    bool needUsePickUps;
 
     override void PostBeginPlay()
     {
@@ -159,6 +160,11 @@ class MazeWalker : Maze3DActor
 
     void thinkingTick()
     {
+        if (self.needUsePickUps && self.testAndUsePickups())
+        {
+            return;
+        }
+
         if (self.turnsAlwaysRight)
         {
             do {
@@ -251,6 +257,33 @@ class MazeWalker : Maze3DActor
             return false;
         }
         return true;
+    }
+
+
+    bool testAndUsePickups()
+    {
+        FLineTraceData traceData;
+        self.LineTrace(self.angle, 64, 0, TRF_SOLIDACTORS, 64, 0, 0, traceData);
+        if (traceData.HitActor)
+        {
+            if (traceData.HitActor is "PlatonicSolid")
+            {
+                PlatonicSolid solid = PlatonicSolid(traceData.HitActor);
+                self.upSideDown = !self.upSideDown;
+                solid.destroyMeAfterRotation = true;
+            }
+            else if (traceData.HitActor is "Smilely")
+            {
+                Smilely smilely = Smilely(traceData.HitActor);
+                smilely.restart();
+            }
+            else
+            {
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 
 

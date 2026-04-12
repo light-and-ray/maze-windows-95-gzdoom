@@ -18,7 +18,7 @@ class MazeGenerator : EventHandler
     const OPENGL_WALLS_NUM = 3;
     const OPENGL_LOGOS_NUM = 2;
     const PLATONIC_SOLIDS_MAX_NUM = 6;
-    const THINGS_N = 1 /*player*/ + 1 /*smiley*/ + 1 /*rat*/
+    const THINGS_N = 1 /*player*/ + 1 /*Smilely*/ + 1 /*rat*/
          + OPENGL_WALLS_NUM + OPENGL_LOGOS_NUM + PLATONIC_SOLIDS_MAX_NUM;
 
     const MISSING_SHADERS_WARNINGS_NUM = 10;
@@ -309,12 +309,12 @@ class MazeGenerator : EventHandler
         a = Actor.Spawn("StartMarker", startMarkerPos);
         actorsToRemove.push(a);
 
-        Vector3 smileyPos;
-        smileyPos.x = (things[things_current][0] + 0.5) * TEXTURE_W;
-        smileyPos.y = (things[things_current][1] + 0.5) * TEXTURE_W;
-        smileyPos.z = 0;
+        Vector3 SmilelyPos;
+        SmilelyPos.x = (things[things_current][0] + 0.5) * TEXTURE_W;
+        SmilelyPos.y = (things[things_current][1] + 0.5) * TEXTURE_W;
+        SmilelyPos.z = 0;
         things_current++;
-        a = Actor.Spawn("Smiley", smileyPos);
+        a = Actor.Spawn("Smilely", SmilelyPos);
 
         actorsToRemove.push(a);
         int ratCellX = things[things_current][0];
