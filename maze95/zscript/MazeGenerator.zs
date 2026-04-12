@@ -22,7 +22,6 @@ class MazeGenerator : EventHandler
          + OPENGL_WALLS_NUM + OPENGL_LOGOS_NUM + PLATONIC_SOLIDS_MAX_NUM;
 
     const MISSING_SHADERS_WARNINGS_NUM = 10;
-    const TURNING_RULE_BREAKERS_NUM = 4;
 
     Maze95Player player;
     Array<Actor> actorsToRemove;
@@ -61,7 +60,11 @@ class MazeGenerator : EventHandler
     void restart()
     {
         self.removeAllThings();
-        self.generateMaze();
+        if (Skill < 3){
+            self.generateMaze();
+        } else {
+            self.generateMazeHard();
+        }
         self.applyCellsOnLevel();
         self.fillThings();
         if (Skill >= 3) {
@@ -84,6 +87,112 @@ class MazeGenerator : EventHandler
     }
 
     void generateMaze()
+    {
+        int x = MAZE_W;
+        int y = MAZE_W;
+        bool unvis[MAZE_W][MAZE_W];
+        bool in_frontier[MAZE_W][MAZE_W]; // Keeps track of cells already in the frontier array
+
+        // initialize arrays
+        for (int i = 0; i < y; i++) {
+            for (int j = 0; j < x; j++) {
+                for (int k = 0; k < 4; k++) {
+                    cells[i][j][k] = 0;
+                }
+                unvis[i][j] = true;
+                in_frontier[i][j] = false;
+            }
+        }
+
+        // Direction helper arrays matching your original logic:
+        // [0] Bottom (x-1), [1] Right (y+1), [2] Top (x+1), [3] Left (y-1)
+        int dx[4] = {-1, 0, 1, 0};
+        int dy[4] = {0, 1, 0, -1};
+        int opposite_wall[4] = {2, 3, 0, 1};
+
+        Vector2 frontier[TOTAL_CELLS];
+        int frontier_size = 0;
+
+        // set starting position
+        Vector2 startCell;
+        startCell.x = floor(frandom(0.0, 1.0) * y);
+        startCell.y = floor(frandom(0.0, 1.0) * x);
+
+        // Mark start as visited
+        unvis[startCell.x][startCell.y] = false;
+
+        // Add starting cell's valid neighbors to the frontier
+        for (int l = 0; l < 4; l++) {
+            int nx = startCell.x + dx[l];
+            int ny = startCell.y + dy[l];
+
+            if (nx > -1 && nx < y && ny > -1 && ny < x) {
+                frontier[frontier_size].x = nx;
+                frontier[frontier_size].y = ny;
+                in_frontier[nx][ny] = true;
+                frontier_size++;
+            }
+        }
+
+        // MAIN LOOP: Process frontier until empty
+        while (frontier_size > 0) {
+            // 1. Pick a random cell from the frontier
+            int random_index = floor(frandom(0.0, 1.0) * frontier_size);
+            Vector2 currentCell = frontier[random_index];
+
+            // 2. Remove it from the frontier array (swap with the last element for speed)
+            frontier[random_index] = frontier[frontier_size - 1];
+            frontier_size--;
+            in_frontier[currentCell.x][currentCell.y] = false;
+
+            // 3. Mark the picked cell as visited
+            unvis[currentCell.x][currentCell.y] = false;
+
+            // 4. Find all ALREADY VISITED neighbors of this cell
+            int visited_neighbors[4];
+            int vn_count = 0;
+
+            for (int l = 0; l < 4; l++) {
+                int nx = currentCell.x + dx[l];
+                int ny = currentCell.y + dy[l];
+
+                if (nx > -1 && nx < y && ny > -1 && ny < x && !unvis[nx][ny]) {
+                    visited_neighbors[vn_count] = l; // Store the direction
+                    vn_count++;
+                }
+            }
+
+            // 5. Connect currentCell to ONE random visited neighbor
+            if (vn_count > 0) {
+                int random_vn_index = floor(frandom(0.0, 1.0) * vn_count);
+                int dir = visited_neighbors[random_vn_index]; // Direction FROM current TO neighbor
+
+                int targetX = currentCell.x + dx[dir];
+                int targetY = currentCell.y + dy[dir];
+
+                // Break down the walls
+                cells[currentCell.x][currentCell.y][dir] = 1;
+                cells[targetX][targetY][opposite_wall[dir]] = 1;
+            }
+
+            // 6. Add currentCell's UNVISITED neighbors to the frontier
+            for (int l = 0; l < 4; l++) {
+                int nx = currentCell.x + dx[l];
+                int ny = currentCell.y + dy[l];
+
+                // Only add if it's within bounds, unvisited, and not already waiting in the frontier
+                if (nx > -1 && nx < y && ny > -1 && ny < x && unvis[nx][ny] && !in_frontier[nx][ny]) {
+                    frontier[frontier_size].x = nx;
+                    frontier[frontier_size].y = ny;
+                    in_frontier[nx][ny] = true;
+                    frontier_size++;
+                }
+            }
+        }
+    }
+
+
+    void generateMazeHard()
     {
         int x = MAZE_W;
         int y = MAZE_W;
@@ -356,7 +465,7 @@ class MazeGenerator : EventHandler
             int y = things[things_current][1];
             things_current++;
             int cellSide;
-            while (true) {
+            for (int tmp = 0; tmp < 10; tmp++) {
                 cellSide = random(0, 3);
                 if (cells[y][x][cellSide] == 0) break;
             }
@@ -422,13 +531,14 @@ class MazeGenerator : EventHandler
 
     void fillTurningRuleBreakers()
     {
-        int breakers[TURNING_RULE_BREAKERS_NUM][2];
+        int breakersNum = random(0, 3);
+        int breakers[3][2];
         int near_threshold = 3;
 
         int x, y, i, j, count = 0;
         bool unique;
 
-        while (count < TURNING_RULE_BREAKERS_NUM) {
+        while (count < breakersNum) {
             x = random(1, MAZE_W - 2);
             y = random(1, MAZE_W - 2);
 
@@ -447,13 +557,12 @@ class MazeGenerator : EventHandler
             }
         }
 
-        TextureId openglWallTexture = TexMan.CheckForTexture("openglwall", TexMan.Type_Any);
-        for (int i = 0; i < TURNING_RULE_BREAKERS_NUM; i++)
+        for (int i = 0; i < breakersNum; i++)
         {
             int x = breakers[i][0];
             int y = breakers[i][1];
             int cellSide;
-            while (true) {
+            for (int tmp = 0; tmp < 10; tmp++) {
                 cellSide = random(0, 3);
                 if (cells[y][x][cellSide] == 0) break;
             }

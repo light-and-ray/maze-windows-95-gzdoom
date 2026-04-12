@@ -66,5 +66,5 @@ skill Normal
 skill Hard
 {
 	Name = "Hard"
-	mustConfirm = "Broken \"turn always left\" / \"turn always right\" rule"
+	mustConfirm = "More tight maze generation; sometimes the rule \"turn always left\" / \"turn always right\" is broken"
 }
