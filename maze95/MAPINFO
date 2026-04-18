@@ -53,7 +53,7 @@ episode maze95
 
 episode maze95RB
 {
-   name = "Rec. Backtr. - Friendlier"
+   name = "R.B. - Friendlier"
 }
 
 skill Relaxed
