@@ -26,7 +26,7 @@ Ultimate ZDoom Experience opens a lot of possibilities for you!:
     1. Relaxed - Walls are very short, No upside down
     2. Easy - No upside down
     3. Normal - Nothing changed
-    4. Hard - More tight maze generation; sometimes the rule "turn always left" / "turn always right" is broken
+    4. Hard - Sometimes the rule "turn always left" / "turn always right" is broken
 - Toggle freelook on "F" key
 - You will probably want to use noclip. Use command "bind v noclip2" and toggle noclip on "V" key
 - To open the auto walking screensaver map separately - use "map titlemap" command
