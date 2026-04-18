@@ -19,6 +19,9 @@ All the features of the original are here:
 
 Ultimate ZDoom Experience opens a lot of possibilities for you!:
 - Play in the Maze by yourself!
+- 2 maze generation algorithms:
+    1. Prim's algorithm (mold like) - the original, looks good in screensaver, but has a lot of annoying short dead ends
+    2. Recursive Backtracking algorithm (worm like) - friendlier for walking through
 - 4 difficulty levels:
     1. Relaxed - Walls are very short, No upside down
     2. Easy - No upside down

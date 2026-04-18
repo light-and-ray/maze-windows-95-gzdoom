@@ -31,11 +31,15 @@ class MazeGenerator : EventHandler
 
     bool backroomsMode;
     const AUTO_TOGGLE_BACKROOMS_TITLEMAP = 12;
+    bool recursiveBacktracingGeneration;
 
 
     override void PlayerEntered(PlayerEvent e)
     {
         self.player = Maze95Player(players[e.PlayerNumber].mo);
+        if (Level.levelName == "maze95RB") {
+            self.recursiveBacktracingGeneration = true;
+        }
         self.initCellsToLinedefs();
         self.stretcher = new('Stretcher_t');
         self.nextLevel();
@@ -46,13 +50,7 @@ class MazeGenerator : EventHandler
         if (completedLevels > 0 && Level.levelName != "TITLEMAP") {
             player.A_Print(String.format("Completed levels streak: %d", completedLevels), 2.5, "CONFONT");
         }
-        int rem = self.completedLevels % self.AUTO_TOGGLE_BACKROOMS_TITLEMAP;
-        if (Level.levelName == "TITLEMAP"
-            && self.completedLevels >= self.AUTO_TOGGLE_BACKROOMS_TITLEMAP
-            && (rem == 0 || rem == 2))
-        {
-            self.toggleBackrooms();
-        }
+        self.toggleBackroomsIfNeeded();
         self.completedLevels++;
         self.restart();
     }
@@ -60,10 +58,10 @@ class MazeGenerator : EventHandler
     void restart()
     {
         self.removeAllThings();
-        if (Skill < 3){
-            self.generateMaze();
+        if (self.recursiveBacktracingGeneration){
+            self.generateMazeRB();
         } else {
-            self.generateMazeHard();
+            self.generateMazePrim();
         }
         self.applyCellsOnLevel();
         self.fillThings();
@@ -86,7 +84,7 @@ class MazeGenerator : EventHandler
         }
     }
 
-    void generateMaze()
+    void generateMazePrim()
     {
         int x = MAZE_W;
         int y = MAZE_W;
@@ -192,7 +190,7 @@ class MazeGenerator : EventHandler
     }
 
 
-    void generateMazeHard()
+    void generateMazeRB()
     {
         int x = MAZE_W;
         int y = MAZE_W;
@@ -311,6 +309,17 @@ class MazeGenerator : EventHandler
         TextureId noTexture = TexMan.CheckForTexture("-", TexMan.Type_Any);
         line.sidedef[Line.front].SetTexture(Side.mid, noTexture);
         line.sidedef[Line.back].SetTexture(Side.mid, noTexture);
+    }
+
+    void toggleBackroomsIfNeeded()
+    {
+        int rem = self.completedLevels % self.AUTO_TOGGLE_BACKROOMS_TITLEMAP;
+        if (Level.levelName == "TITLEMAP"
+            && self.completedLevels >= self.AUTO_TOGGLE_BACKROOMS_TITLEMAP
+            && (rem == 0 || rem == 2))
+        {
+            self.toggleBackrooms();
+        }
     }
 
     void toggleBackrooms()

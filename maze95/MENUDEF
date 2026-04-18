@@ -35,7 +35,7 @@ ListMenu "EpisodeMenu"
 {
 	NetgameMessage "$NEWGAME"
 	Position 48, 63
-	StaticText 54, 38, "$MNU_EPISODE"
+	StaticText 54, 38, "MAZE GENERATOR"
 }
 
 //-------------------------------------------------------------------------------------------

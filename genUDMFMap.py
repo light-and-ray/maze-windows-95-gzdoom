@@ -13,8 +13,17 @@ class Line:
 
 MAZE_W = 10
 TEXTURE_W = 128
-LIGHT_LEVEL = 250
+LIGHT_LEVEL = 230
 BOX_GAP = 1
+
+
+def saveInner(udmfMap, mapName: str):
+    wad = omg.WAD()
+    wad.udmfmaps[mapName] = udmfMap.to_lumps()
+    wadPath = "maze95/maps/" + mapName + ".wad"
+    os.makedirs(os.path.dirname(wadPath), exist_ok=True)
+    wad.to_file(wadPath)
+
 
 def save(lines: list[list[Line]], box: list[Line]):
     vertexes : list[tuple[int]] = []
@@ -64,17 +73,9 @@ def save(lines: list[list[Line]], box: list[Line]):
     udmfMap.things.append(omg.UThing(x=64, y=64, ednum=1)) # spawn point
     udmfMap.vertexes = [omg.UVertex(*v) for v in vertexes]
 
-    mapName = 'maze95'
-    wad = omg.WAD()
-    wad.udmfmaps[mapName] = udmfMap.to_lumps()
-    wadPath = "maze95/maps/" + mapName + ".wad"
-    os.makedirs(os.path.dirname(wadPath), exist_ok=True)
-    wad.to_file(wadPath)
-
-    wad = omg.WAD()
-    wad.udmfmaps["TITLEMAP"] = udmfMap.to_lumps()
-    titleMapWadPath = "maze95/maps/TITLEMAP.wad"
-    wad.to_file(titleMapWadPath)
+    saveInner(udmfMap, "maze95")
+    saveInner(udmfMap, "maze95RB")
+    saveInner(udmfMap, "TITLEMAP")
 
 
 def genUDMFMap():

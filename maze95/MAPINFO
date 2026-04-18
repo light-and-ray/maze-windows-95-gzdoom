@@ -32,6 +32,12 @@ map maze95 lookup "maze95"
     EventHandlers = "MazeGenerator", "BackroomsHandler"
 }
 
+map maze95RB lookup "maze95RB"
+{
+    levelnum = 1
+    EventHandlers = "MazeGenerator", "BackroomsHandler"
+}
+
 map TITLEMAP lookup "TITLEMAP"
 {
     levelnum = 1
@@ -42,7 +48,12 @@ clearepisodes
 
 episode maze95
 {
-   name = "Maze Windows 95"
+   name = "Prim's - Original"
+}
+
+episode maze95RB
+{
+   name = "Rec. Backtr. - Friendlier"
 }
 
 skill Relaxed
@@ -66,5 +77,5 @@ skill Normal
 skill Hard
 {
 	Name = "Hard"
-	mustConfirm = "More tight maze generation; sometimes the rule \"turn always left\" / \"turn always right\" is broken"
+	mustConfirm = "Sometimes the rule \"turn always left\" / \"turn always right\" is broken"
 }
